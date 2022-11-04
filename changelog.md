@@ -17,6 +17,8 @@ All notable changes to this project will be documented in this file.
 
 ## Work in progress
 
+## Version 2.1.2 - 2022/11/04
+
 ### Fixed
 
 Fix pagination and filter ordering in the reader: the filter is now applied
