@@ -3,8 +3,6 @@ package kotools.types
 import kotlinx.serialization.Serializable
 import kotools.shared.Project.Types
 import kotools.shared.SinceKotools
-import kotools.types.number.aNegativeNumber
-import kotools.types.number.shouldBe
 import kotlin.jvm.JvmInline
 
 /** Representation of negative integers, including zero. */
