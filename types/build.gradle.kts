@@ -16,7 +16,7 @@ plugins {
     signing
 }
 
-version = "3.2.0"
+version = "4.0.0-SNAPSHOT"
 
 lateinit var commonSourceSet: KotlinSourceSet
 lateinit var jvmSourceSet: KotlinSourceSet
