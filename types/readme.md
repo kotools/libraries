@@ -6,7 +6,8 @@
 Kotools Types is a lightweight library that provides commonly used types for
 [Kotlin].
 
-> This library currently supports the JVM, JS and Native platforms.
+> This library currently supports the _JVM_, _JS_, _Linux x64_, _macOS x64_ and
+> _Windows x64_ platforms.
 
 ```kotlin
 NonZeroInt(1)
