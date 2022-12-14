@@ -2,10 +2,7 @@ import kotools.gradle.Git
 import kotools.gradle.GitHub
 import kotools.gradle.Gpg
 import kotools.gradle.Maven
-import org.jetbrains.dokka.Platform
-import org.jetbrains.dokka.gradle.GradleDokkaSourceSetBuilder
 import org.jetbrains.kotlin.gradle.dsl.ExplicitApiMode
-import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSet
 import org.jetbrains.kotlin.gradle.targets.js.dsl.KotlinJsTargetDsl
 
 plugins {
@@ -18,13 +15,16 @@ plugins {
 
 version = "4.0.0-SNAPSHOT"
 
-lateinit var commonSourceSet: KotlinSourceSet
-lateinit var jvmSourceSet: KotlinSourceSet
-lateinit var jsSourceSet: KotlinSourceSet
-lateinit var nativeSourceSet: KotlinSourceSet
-lateinit var linuxSourceSet: KotlinSourceSet
-lateinit var macosSourceSet: KotlinSourceSet
-lateinit var windowsSourceSet: KotlinSourceSet
+dependencies {
+    // Kotlin
+    commonMainImplementation(platform(kotlin("bom")))
+    commonMainImplementation(kotlinx.serialization.json)
+    commonTestImplementation(kotlin("test"))
+
+    // Kotools
+    commonMainImplementation(project(":shared"))
+    commonTestImplementation(kotools.assert)
+}
 
 java.targetCompatibility = JavaVersion.VERSION_1_8
 
@@ -38,40 +38,6 @@ kotlin {
     linuxX64()
     macosX64()
     mingwX64()
-    @Suppress("UNUSED_VARIABLE")
-    sourceSets {
-        val commonMain: KotlinSourceSet by getting {
-            dependencies {
-                implementation(project.dependencies.platform(kotlin("bom")))
-                implementation(kotlinx.serialization.json)
-                implementation(project(":shared"))
-            }
-        }
-        val commonTest: KotlinSourceSet by getting {
-            dependencies {
-                implementation(kotlin("test"))
-                implementation(kotools.assert)
-            }
-        }
-        commonSourceSet = commonMain
-        val jsMain: KotlinSourceSet by getting
-        jsSourceSet = jsMain
-        val jvmMain: KotlinSourceSet by getting
-        val jvmTest: KotlinSourceSet by getting
-        jvmSourceSet = jvmMain
-        val nativeMain: KotlinSourceSet by creating { dependsOn(commonMain) }
-        val nativeTest: KotlinSourceSet by creating { dependsOn(commonTest) }
-        nativeSourceSet = nativeMain
-        val linuxX64Main: KotlinSourceSet by getting { dependsOn(nativeMain) }
-        val linuxX64Test: KotlinSourceSet by getting { dependsOn(nativeTest) }
-        linuxSourceSet = linuxX64Main
-        val macosX64Main: KotlinSourceSet by getting { dependsOn(nativeMain) }
-        val macosX64Test: KotlinSourceSet by getting { dependsOn(nativeTest) }
-        macosSourceSet = macosX64Main
-        val mingwX64Main: KotlinSourceSet by getting { dependsOn(nativeMain) }
-        val mingwX64Test: KotlinSourceSet by getting { dependsOn(nativeTest) }
-        windowsSourceSet = mingwX64Main
-    }
 }
 
 // ---------- Tasks ----------
@@ -87,38 +53,9 @@ val dokkaDirectory: File = buildDir.resolve("dokka")
 tasks.dokkaHtml {
     outputDirectory.set(dokkaDirectory)
     dokkaSourceSets {
-        fun GradleDokkaSourceSetBuilder.sourceRoots(
-            vararg sourceSets: KotlinSourceSet
-        ): Unit = sourceSets.forEach { sourceRoots.from(it.kotlin.srcDirs) }
-
         configureEach {
-            includes.from += "packages.md"
             reportUndocumented.set(true)
             skipEmptyPackages.set(true)
-        }
-        named(commonSourceSet.name) { displayName.set("All platforms") }
-        named(jsSourceSet.name) {
-            displayName.set("JS")
-            platform.set(Platform.js)
-            dependsOn(commonSourceSet.name)
-            sourceRoots(jsSourceSet)
-        }
-        named(jvmSourceSet.name) {
-            displayName.set("JVM")
-            platform.set(Platform.jvm)
-            dependsOn(commonSourceSet.name)
-            sourceRoots(jvmSourceSet)
-        }
-        named(nativeSourceSet.name) {
-            displayName.set("Native")
-            platform.set(Platform.native)
-            dependsOn(commonSourceSet.name)
-            sourceRoots(
-                nativeSourceSet,
-                linuxSourceSet,
-                macosSourceSet,
-                windowsSourceSet
-            )
         }
     }
 }
