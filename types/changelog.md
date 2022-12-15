@@ -32,6 +32,8 @@ All notable changes to this project will be documented in this file.
   ([#123](https://github.com/kotools/libraries/issues/123)).
 - The `NotEmptySet.toNotEmptyList` function
   ([#126](https://github.com/kotools/libraries/issues/126)).
+- The `NotEmptyList.toNotEmptySet` function
+  ([#127](https://github.com/kotools/libraries/issues/127)).
 
 #### Removed
 

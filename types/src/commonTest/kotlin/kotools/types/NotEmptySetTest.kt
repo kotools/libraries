@@ -26,8 +26,7 @@ class NotEmptySetTest {
     fun toString_should_behave_like_a_Set() {
         val elements: Set<Int> = List(8) { Random.nextInt() }
             .toSet()
-        elements.toNotEmptySet()
-            .getOrThrow()
+        elements.toNotEmptySetOrThrow()
             .toString() assertEquals "$elements"
     }
 
@@ -64,8 +63,7 @@ class NotEmptySetTest {
     fun serialization_should_behave_like_a_Set() {
         val elements: Set<Int> = List(8) { Random.nextInt() }
             .toSet()
-        val notEmptyList: NotEmptySet<Int> = elements.toNotEmptySet()
-            .getOrThrow()
+        val notEmptyList: NotEmptySet<Int> = elements.toNotEmptySetOrThrow()
         val result: String = Json.encodeToString(notEmptyList)
         result assertEquals Json.encodeToString(elements)
     }
