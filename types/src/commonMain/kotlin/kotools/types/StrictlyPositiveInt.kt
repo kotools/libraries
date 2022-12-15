@@ -35,6 +35,12 @@ private constructor(private val value: Int) : ExplicitInt,
         value.compareTo(other.value)
 
     override fun toInt(): Int = value
+
+    /** Returns this integer as a [NonZeroInt]. */
+    @SinceKotools(Types, "4.0")
+    public fun toNonZeroInt(): NonZeroInt = value.toNonZeroInt()
+        .getOrThrow()
+
     override fun toString(): String = "$value"
 }
 
