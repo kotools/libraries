@@ -24,6 +24,9 @@ All notable changes to this project will be documented in this file.
 - Overload the `toNotBlankString` function for converting the string
   representation of an `ExplicitInt`, a `Collection` or a `Map` to a
   `NotBlankString` ([#119](https://github.com/kotools/libraries/issues/119)).
+- The `toNonZeroInt` function to the `StrictlyPositiveInt` and
+  `StrictlyNegativeInt` types
+  ([#121](https://github.com/kotools/libraries/issues/121)).
 
 #### Removed
 
