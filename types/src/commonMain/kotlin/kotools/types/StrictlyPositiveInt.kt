@@ -38,8 +38,7 @@ private constructor(private val value: Int) : ExplicitInt,
 
     /** Returns this integer as a [NonZeroInt]. */
     @SinceKotools(Types, "4.0")
-    public fun toNonZeroInt(): NonZeroInt = value.toNonZeroInt()
-        .getOrThrow()
+    public fun toNonZeroInt(): NonZeroInt = value.toNonZeroIntOrThrow()
 
     override fun toString(): String = "$value"
 }
