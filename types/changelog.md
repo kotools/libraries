@@ -30,6 +30,8 @@ All notable changes to this project will be documented in this file.
   ([#122](https://github.com/kotools/libraries/issues/122)).
 - The `StrictlyNegativeInt.toNegativeInt` function
   ([#123](https://github.com/kotools/libraries/issues/123)).
+- The `NotEmptySet.toNotEmptyList` function
+  ([#126](https://github.com/kotools/libraries/issues/126)).
 
 #### Removed
 
