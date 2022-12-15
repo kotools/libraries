@@ -40,6 +40,10 @@ private constructor(private val value: Int) : ExplicitInt,
     @SinceKotools(Types, "4.0")
     public fun toNonZeroInt(): NonZeroInt = value.toNonZeroIntOrThrow()
 
+    /** Returns this integer as a [NegativeInt]. */
+    @SinceKotools(Types, "4.0")
+    public fun toNegativeInt(): NegativeInt = value.toNegativeIntOrThrow()
+
     override fun toString(): String = "$value"
 }
 

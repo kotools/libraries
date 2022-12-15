@@ -28,6 +28,13 @@ class StrictlyNegativeIntTest {
     }
 
     @Test
+    fun toNegativeInt_should_pass() {
+        val x: StrictlyNegativeInt = StrictlyNegativeInt.random()
+        x.toNegativeInt()
+            .toInt() assertEquals x.toInt()
+    }
+
+    @Test
     fun toString_should_behave_like_an_Int() {
         val x: StrictlyNegativeInt = StrictlyNegativeInt.random()
         val value: Int = x.toInt()

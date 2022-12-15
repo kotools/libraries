@@ -20,8 +20,7 @@ private constructor(private val value: Int) : ExplicitInt,
             ?: Result.failure(value shouldBe aNegativeNumber)
 
         fun random(): NegativeInt = range.random()
-            .toNegativeInt()
-            .getOrThrow()
+            .toNegativeIntOrThrow()
     }
 
     /**
@@ -46,3 +45,7 @@ internal object NegativeIntSerializer :
  */
 @SinceKotools(Types, "3.2")
 public fun Int.toNegativeInt(): Result<NegativeInt> = NegativeInt of this
+
+@Throws(IllegalArgumentException::class)
+internal fun Int.toNegativeIntOrThrow(): NegativeInt = toNegativeInt()
+    .getOrThrow()
