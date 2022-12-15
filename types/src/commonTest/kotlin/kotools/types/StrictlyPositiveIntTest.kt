@@ -28,6 +28,13 @@ class StrictlyPositiveIntTest {
     }
 
     @Test
+    fun toPositiveInt_should_pass() {
+        val x: StrictlyPositiveInt = StrictlyPositiveInt.random()
+        x.toPositiveInt()
+            .toInt() assertEquals x.toInt()
+    }
+
+    @Test
     fun toString_should_behave_like_an_Int() {
         val x: StrictlyPositiveInt = StrictlyPositiveInt.random()
         "$x" assertEquals x.toInt()

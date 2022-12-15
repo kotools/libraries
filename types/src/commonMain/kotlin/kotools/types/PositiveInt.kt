@@ -20,8 +20,7 @@ private constructor(private val value: Int) : ExplicitInt,
             ?: Result.failure(value shouldBe aPositiveNumber)
 
         fun random(): PositiveInt = range.random()
-            .toPositiveInt()
-            .getOrThrow()
+            .toPositiveIntOrThrow()
     }
 
     /**
@@ -46,3 +45,7 @@ internal object PositiveIntSerializer :
  */
 @SinceKotools(Types, "3.2")
 public fun Int.toPositiveInt(): Result<PositiveInt> = PositiveInt of this
+
+@Throws(IllegalArgumentException::class)
+internal fun Int.toPositiveIntOrThrow(): PositiveInt = toPositiveInt()
+    .getOrThrow()
