@@ -19,6 +19,12 @@ All notable changes to this project will be documented in this file.
 
 ### All platforms
 
+#### Added
+
+- Overload the `toNotBlankString` function for converting the string
+  representation of an `ExplicitInt`, a `Collection` or a `Map` to a
+  `NotBlankString` ([#119](https://github.com/kotools/libraries/issues/119)).
+
 #### Removed
 
 - All deprecated declarations
