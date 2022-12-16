@@ -17,6 +17,12 @@ All notable changes to this project will be documented in this file.
 
 ## Work in progress
 
+### Added
+
+The `NotBlankString.toCsvPath` function for converting a `NotBlankString` to a
+`CsvPath` pointing to a CSV file
+([#47](https://github.com/kotools/csv/issues/47)).
+
 ## Version 2.2.1 - 2022/11/04
 
 > This version contains every changes included in `v2.0.2` and `v2.1.2`.
