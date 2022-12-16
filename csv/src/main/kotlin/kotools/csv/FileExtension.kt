@@ -1,7 +1,8 @@
-package kotools.csv.path
+package kotools.csv
 
 import kotools.types.string.NotBlankString
 import kotools.types.string.notBlankStringOrThrow
+import kotools.types.string.toNotBlankStringOrThrow
 
 internal val csvExtension: FileExtension.Csv = FileExtension.Csv
 
@@ -16,5 +17,5 @@ internal sealed class FileExtension(value: NotBlankString) {
     override fun toString(): String = extension.value
     fun toNotBlankString(): NotBlankString = extension
 
-    object Csv : FileExtension(notBlankStringOrThrow("csv"))
+    object Csv : FileExtension("csv".toNotBlankStringOrThrow())
 }
