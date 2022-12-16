@@ -13,14 +13,14 @@ class PathTest {
         val file = "file"
         file.toNotBlankString()
             .getOrThrow()
-            .csv
+            .toCsvPath()
             .getOrThrow()
             .toString() assertEquals "$file${CsvPath.extension}"
     }
 
     @Test
     fun notBlankString_csv_should_fail_with_a_NotBlankString_that_equals_the_extension() {
-        val result: Result<CsvPath> = CsvPath.extension.csv
+        val result: Result<CsvPath> = CsvPath.extension.toCsvPath()
         assertFailsWith<IllegalArgumentException>(result::getOrThrow)
             .message
             .assertNotNull()

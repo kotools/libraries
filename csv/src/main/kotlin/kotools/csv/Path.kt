@@ -38,4 +38,4 @@ private constructor(private val value: NotBlankString) {
  * string equals the `.csv` extension.
  */
 @SinceKotools(Csv, "2.3")
-public val NotBlankString.csv: Result<CsvPath> get() = CsvPath of this
+public fun NotBlankString.toCsvPath(): Result<CsvPath> = CsvPath of this
