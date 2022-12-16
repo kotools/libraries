@@ -1,7 +1,6 @@
 package kotools.csv.path
 
 import kotools.assert.assertEquals
-import kotools.assert.assertFailsWith
 import kotools.assert.assertNotNull
 import kotools.assert.assertTrue
 import kotools.types.string.NotBlankString
@@ -26,11 +25,12 @@ class CsvPathTest {
     }
 
     @Test
-    fun csv_should_fail_with_a_NotBlankString_that_equals_the_CSV_extension() {
-        val file: NotBlankString = csvExtension.toNotBlankString()
-        assertFailsWith<CsvExtensionAsPathException>(file.csv::getOrThrow)
+    fun csv_should_fail_with_a_NotBlankString_that_equals_the_CSV_extension(): Unit =
+        csvExtension.toNotBlankString()
+            .csv.exceptionOrNull()
+            .assertNotNull()
+            .also { it is CsvExtensionAsPathException }
             .message.assertNotNull()
             .isNotBlank()
             .assertTrue()
-    }
 }
