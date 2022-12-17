@@ -12,16 +12,19 @@ import kotlin.jvm.JvmInline
 public value class NonZeroInt
 private constructor(private val value: Int) : ExplicitInt,
     Comparable<NonZeroInt> {
-    internal companion object {
-        val ranges: Set<IntRange> by lazy {
+    public companion object {
+        internal val ranges: Set<IntRange> by lazy {
             setOf(StrictlyPositiveInt.range, StrictlyNegativeInt.range)
         }
 
-        infix fun of(value: Int): Result<NonZeroInt> = value.takeIf { it != 0 }
+        internal infix fun of(value: Int): Result<NonZeroInt> = value
+            .takeIf { it != 0 }
             ?.toSuccessfulResult(::NonZeroInt)
             ?: Result.failure(value shouldBe otherThanZero)
 
-        fun random(): NonZeroInt = ranges.random()
+        /** Returns a random [NonZeroInt]. */
+        @SinceKotools(Types, "4.0")
+        public fun random(): NonZeroInt = ranges.random()
             .random()
             .toNonZeroIntOrThrow()
     }

@@ -12,15 +12,17 @@ import kotlin.jvm.JvmInline
 public value class StrictlyNegativeInt
 private constructor(private val value: Int) : ExplicitInt,
     Comparable<StrictlyNegativeInt> {
-    internal companion object {
-        val range: IntRange by lazy { Int.MIN_VALUE..-1 }
+    public companion object {
+        internal val range: IntRange by lazy { Int.MIN_VALUE..-1 }
 
-        infix fun of(value: Int): Result<StrictlyNegativeInt> = value
+        internal infix fun of(value: Int): Result<StrictlyNegativeInt> = value
             .takeIf { it < 0 }
             ?.toSuccessfulResult(::StrictlyNegativeInt)
             ?: Result.failure(value shouldBe aStrictlyNegativeNumber)
 
-        fun random(): StrictlyNegativeInt = range.random()
+        /** Returns a random [StrictlyNegativeInt]. */
+        @SinceKotools(Types, "4.0")
+        public fun random(): StrictlyNegativeInt = range.random()
             .toStrictlyNegativeInt()
             .getOrThrow()
     }

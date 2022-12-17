@@ -12,15 +12,17 @@ import kotlin.jvm.JvmInline
 public value class StrictlyPositiveInt
 private constructor(private val value: Int) : ExplicitInt,
     Comparable<StrictlyPositiveInt> {
-    internal companion object {
-        val range: IntRange by lazy { 1..Int.MAX_VALUE }
+    public companion object {
+        internal val range: IntRange by lazy { 1..Int.MAX_VALUE }
 
-        infix fun of(value: Int): Result<StrictlyPositiveInt> = value
+        internal infix fun of(value: Int): Result<StrictlyPositiveInt> = value
             .takeIf { it > 0 }
             ?.toSuccessfulResult(::StrictlyPositiveInt)
             ?: Result.failure(value shouldBe aStrictlyPositiveNumber)
 
-        fun random(): StrictlyPositiveInt = range.random()
+        /** Returns a random [StrictlyPositiveInt]. */
+        @SinceKotools(Types, "4.0")
+        public fun random(): StrictlyPositiveInt = range.random()
             .toStrictlyPositiveInt()
             .getOrThrow()
     }
