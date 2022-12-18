@@ -34,9 +34,6 @@ All notable changes to this project will be documented in this file.
   ([#126](https://github.com/kotools/libraries/issues/126)).
 - The `NotEmptyList.toNotEmptySet` function
   ([#127](https://github.com/kotools/libraries/issues/127)).
-- The `random` function to the companion object of `NonZeroInt`, `PositiveInt`,
-  `NegativeInt`, `StrictlyPositiveInt` and `StrictlyNegativeInt`
-  ([#128](https://github.com/kotools/libraries/issues/128)).
 
 #### Removed
 
