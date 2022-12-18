@@ -20,6 +20,7 @@ private constructor(override val value: Int) : NonZeroInt, PositiveInt {
     }
 
     /** Returns this [value] as a [String]. */
+    @SinceKotools(Types, "4.0")
     override fun toString(): String = "$value"
 }
 
