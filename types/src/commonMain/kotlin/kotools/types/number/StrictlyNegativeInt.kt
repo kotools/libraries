@@ -19,8 +19,6 @@ private constructor(override val value: Int) : NonZeroInt, NegativeInt {
             ?: Result.failure(value shouldBe aStrictlyNegativeNumber)
     }
 
-    /** Returns this [value] as a [String]. */
-    @SinceKotools(Types, "4.0")
     override fun toString(): String = "$value"
 }
 

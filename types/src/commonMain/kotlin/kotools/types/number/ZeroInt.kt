@@ -16,6 +16,5 @@ public object ZeroInt : PositiveInt, NegativeInt {
     /** Returns the hash code of this [value]. */
     override fun hashCode(): Int = value.hashCode()
 
-    /** Returns this [value] as a [String]. */
     override fun toString(): String = "$value"
 }

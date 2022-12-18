@@ -8,4 +8,7 @@ import kotools.shared.SinceKotools
 public sealed interface AnyInt {
     /** The value to hold. */
     public val value: Int
+
+    /** Returns this [value] as a [String]. */
+    override fun toString(): String
 }
