@@ -7,19 +7,10 @@ import kotools.assert.assertEquals
 import kotools.assert.assertFailsWith
 import kotools.assert.assertNotNull
 import kotools.assert.assertTrue
-import kotlin.random.Random
 import kotlin.test.Test
 import kotlin.test.assertContentEquals
 
 class NotEmptyListTest {
-    @Test
-    fun toNotEmptySet_should_pass() {
-        val list: NotEmptyList<Int> = List(3) { Random.nextInt() }
-            .toNotEmptyListOrThrow()
-        val result: NotEmptySet<Int> = list.toNotEmptySet()
-        assertContentEquals(list, result)
-    }
-
     @Test
     fun toString_should_behave_like_a_Collection() {
         val collection: Collection<Int> = List(3) { NonZeroInt.random() }

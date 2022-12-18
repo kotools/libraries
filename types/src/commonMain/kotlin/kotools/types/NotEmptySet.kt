@@ -45,7 +45,8 @@ internal class NotEmptySetSerializer<E>(elementSerializer: KSerializer<E>) :
 @SinceKotools(Types, "3.2")
 public fun <E> notEmptySetOf(head: E, vararg tail: E): NotEmptySet<E> {
     val result: List<E> = listOf(head) + tail
-    return result.toNotEmptySetOrThrow()
+    return result.toNotEmptySet()
+        .getOrThrow()
 }
 
 /**
@@ -55,8 +56,3 @@ public fun <E> notEmptySetOf(head: E, vararg tail: E): NotEmptySet<E> {
 @SinceKotools(Types, "3.2")
 public fun <E> Collection<E>.toNotEmptySet(): Result<NotEmptySet<E>> =
     NotEmptySet of this
-
-@Throws(IllegalArgumentException::class)
-internal fun <E> Collection<E>.toNotEmptySetOrThrow(): NotEmptySet<E> =
-    toNotEmptySet()
-        .getOrThrow()
