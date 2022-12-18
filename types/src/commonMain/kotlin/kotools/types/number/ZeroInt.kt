@@ -7,4 +7,15 @@ import kotools.shared.SinceKotools
 @SinceKotools(Types, "4.0")
 public object ZeroInt : PositiveInt, NegativeInt {
     override val value: Int = 0
+
+    /**
+     * Returns `true` if the [other] value is a [ZeroInt] or `false` otherwise.
+     */
+    override fun equals(other: Any?): Boolean = other is ZeroInt
+
+    /** Returns the hash code of this [value]. */
+    override fun hashCode(): Int = value.hashCode()
+
+    /** Returns this [value] as a [String]. */
+    override fun toString(): String = "$value"
 }
