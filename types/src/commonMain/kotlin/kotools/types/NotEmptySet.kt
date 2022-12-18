@@ -23,11 +23,6 @@ private constructor(private val elements: Set<E>) : Set<E> by elements {
                 ?: Result.failure(EmptyCollectionError)
     }
 
-    /** Returns this set as a [NotEmptyList]. */
-    @SinceKotools(Types, "4.0")
-    public fun toNotEmptyList(): NotEmptyList<E> =
-        elements.toNotEmptyListOrThrow()
-
     override fun toString(): String = "$elements"
 }
 

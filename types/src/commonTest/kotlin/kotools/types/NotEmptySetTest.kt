@@ -13,16 +13,6 @@ import kotlin.test.assertContentEquals
 
 class NotEmptySetTest {
     @Test
-    fun toNotEmptyList_should_pass() {
-        val head: Int = Random.nextInt()
-        val tail: Array<Int> = List(7) { Random.nextInt() }
-            .toTypedArray()
-        val set: NotEmptySet<Int> = notEmptySetOf(head, *tail)
-        val list: NotEmptyList<Int> = set.toNotEmptyList()
-        assertContentEquals(set, list)
-    }
-
-    @Test
     fun toString_should_behave_like_a_Set() {
         val elements: Set<Int> = List(8) { Random.nextInt() }
             .toSet()

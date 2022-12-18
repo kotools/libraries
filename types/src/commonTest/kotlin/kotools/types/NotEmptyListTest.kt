@@ -15,7 +15,8 @@ class NotEmptyListTest {
     fun toString_should_behave_like_a_Collection() {
         val collection: Collection<Int> = List(3) { NonZeroInt.random() }
             .map(NonZeroInt::toInt)
-        collection.toNotEmptyListOrThrow()
+        collection.toNotEmptyList()
+            .getOrThrow()
             .toString() assertEquals "$collection"
     }
 
@@ -55,7 +56,8 @@ class NotEmptyListTest {
     fun serialization_should_behave_like_a_List() {
         val list: List<Int> = List(3) { NonZeroInt.random() }
             .map(NonZeroInt::toInt)
-        val notEmptyList: NotEmptyList<Int> = list.toNotEmptyListOrThrow()
+        val notEmptyList: NotEmptyList<Int> = list.toNotEmptyList()
+            .getOrThrow()
         val result: String = Json.encodeToString(notEmptyList)
         result assertEquals Json.encodeToString(list)
     }
