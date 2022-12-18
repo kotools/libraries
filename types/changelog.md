@@ -19,11 +19,6 @@ All notable changes to this project will be documented in this file.
 
 ### All platforms
 
-#### Added
-
-The `toNotBlankString` function to the `ExplicitInt`, `Collection` and `Map`
-types ([#119](https://github.com/kotools/libraries/issues/119)).
-
 #### Removed
 
 - All deprecated declarations
