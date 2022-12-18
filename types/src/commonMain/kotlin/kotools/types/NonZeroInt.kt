@@ -23,7 +23,8 @@ private constructor(private val value: Int) : ExplicitInt,
 
         fun random(): NonZeroInt = ranges.random()
             .random()
-            .toNonZeroIntOrThrow()
+            .toNonZeroInt()
+            .getOrThrow()
     }
 
     /**
@@ -49,7 +50,3 @@ internal object NonZeroIntSerializer :
  */
 @SinceKotools(Types, "3.2")
 public fun Int.toNonZeroInt(): Result<NonZeroInt> = NonZeroInt of this
-
-@Throws(IllegalArgumentException::class)
-internal fun Int.toNonZeroIntOrThrow(): NonZeroInt = toNonZeroInt()
-    .getOrThrow()
