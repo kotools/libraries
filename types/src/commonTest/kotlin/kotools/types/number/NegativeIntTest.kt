@@ -1,5 +1,7 @@
 package kotools.types.number
 
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 import kotools.assert.assertEquals
 import kotools.assert.assertFailsWith
 import kotools.assert.assertNotNull
@@ -24,6 +26,36 @@ class NegativeIntTest {
         assertFailsWith<IllegalArgumentException>(result::getOrThrow)
             .message
             .assertNotNull()
+            .isNotBlank()
+            .assertTrue()
+    }
+
+    @Test
+    fun serialization_should_behave_like_an_Int() {
+        val x: NegativeInt = negativeIntRange.random()
+            .toNegativeInt()
+            .getOrThrow()
+        val result: String = Json.encodeToString(NegativeIntSerializer, x)
+        result assertEquals Json.encodeToString(x.value)
+    }
+
+    @Test
+    fun deserialization_should_pass_with_a_negative_Int() {
+        val value: Int = negativeIntRange.random()
+        val encoded: String = Json.encodeToString(value)
+        val result: NegativeInt =
+            Json.decodeFromString(NegativeIntSerializer, encoded)
+        result.value assertEquals value
+    }
+
+    @Test
+    fun deserialization_should_fail_with_a_strictly_positive_Int() {
+        val value: Int = strictlyPositiveIntRange.random()
+        val encoded: String = Json.encodeToString(value)
+        val exception: IllegalArgumentException = assertFailsWith {
+            Json.decodeFromString(NegativeIntSerializer, encoded)
+        }
+        exception.message.assertNotNull()
             .isNotBlank()
             .assertTrue()
     }

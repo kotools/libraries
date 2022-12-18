@@ -5,7 +5,7 @@ import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 
-internal sealed class Serializer<T, D>(
+internal abstract class Serializer<T, D>(
     private val delegate: KSerializer<D>,
     private val toDelegatedType: (T) -> D,
     private val toType: (D) -> Result<T>

@@ -1,5 +1,6 @@
 package kotools.types.number
 
+import kotlinx.serialization.Serializable
 import kotools.shared.Project.Types
 import kotools.shared.SinceKotools
 import kotools.types.aStrictlyPositiveNumber
@@ -9,6 +10,7 @@ import kotlin.jvm.JvmInline
 
 /** Representation of positive integers excluding [zero][ZeroInt]. */
 @JvmInline
+@Serializable(StrictlyPositiveIntSerializer::class)
 @SinceKotools(Types, "1.1")
 public value class StrictlyPositiveInt
 private constructor(override val value: Int) : NonZeroInt, PositiveInt {
@@ -29,3 +31,6 @@ private constructor(override val value: Int) : NonZeroInt, PositiveInt {
 @SinceKotools(Types, "1.1")
 public fun Int.toStrictlyPositiveInt(): Result<StrictlyPositiveInt> =
     StrictlyPositiveInt of this
+
+internal object StrictlyPositiveIntSerializer :
+    AnyIntSerializer<StrictlyPositiveInt>(Int::toStrictlyPositiveInt)

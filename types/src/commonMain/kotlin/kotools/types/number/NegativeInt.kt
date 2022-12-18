@@ -1,11 +1,13 @@
 package kotools.types.number
 
+import kotlinx.serialization.Serializable
 import kotools.shared.Project.Types
 import kotools.shared.SinceKotools
 import kotools.types.aNegativeNumber
 import kotools.types.shouldBe
 
 /** Representation of negative integers including [zero][ZeroInt]. */
+@Serializable(NegativeIntSerializer::class)
 @SinceKotools(Types, "1.1")
 public sealed interface NegativeInt : AnyInt
 
@@ -19,3 +21,6 @@ public fun Int.toNegativeInt(): Result<NegativeInt> = when {
     this < ZeroInt.value -> toStrictlyNegativeInt()
     else -> Result.failure(this shouldBe aNegativeNumber)
 }
+
+internal object NegativeIntSerializer :
+    AnyIntSerializer<NegativeInt>(Int::toNegativeInt)
