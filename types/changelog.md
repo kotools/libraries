@@ -26,8 +26,6 @@ All notable changes to this project will be documented in this file.
 - The `toNonZeroInt` function to the `StrictlyPositiveInt` and
   `StrictlyNegativeInt` types
   ([#121](https://github.com/kotools/libraries/issues/121)).
-- The `StrictlyPositiveInt.toPositiveInt` function
-  ([#122](https://github.com/kotools/libraries/issues/122)).
 
 #### Removed
 
