@@ -10,6 +10,13 @@ import kotlin.test.Test
 
 class StrictlyPositiveIntTest {
     @Test
+    fun toString_should_behave_like_an_Int(): Unit = Random
+        .nextInt(1..Int.MAX_VALUE)
+        .toStrictlyPositiveInt()
+        .getOrThrow()
+        .run { toString() assertEquals "$value" }
+
+    @Test
     fun int_toStrictlyPositiveInt_should_pass_with_a_strictly_positive_Int() {
         val value: Int = Random.nextInt(1..Int.MAX_VALUE)
         value.toStrictlyPositiveInt()

@@ -18,6 +18,9 @@ private constructor(override val value: Int) : NonZeroInt, PositiveInt {
             ?.toSuccessfulResult(::StrictlyPositiveInt)
             ?: Result.failure(value shouldBe aStrictlyPositiveNumber)
     }
+
+    /** Returns this [value] as a [String]. */
+    override fun toString(): String = "$value"
 }
 
 /**
