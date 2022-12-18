@@ -8,10 +8,22 @@ import kotlin.random.Random
 import kotlin.random.nextInt
 import kotlin.test.Test
 
+private val StrictlyNegativeInt.Companion.range: IntRange by lazy {
+    Int.MIN_VALUE..-1
+}
+
 class StrictlyNegativeIntTest {
     @Test
+    fun toString_should_behave_like_an_Int() {
+        val value: Int = StrictlyNegativeInt.range.random()
+        value.toStrictlyNegativeInt()
+            .getOrThrow()
+            .toString() assertEquals "$value"
+    }
+
+    @Test
     fun int_toStrictlyNegativeInt_should_pass_with_a_strictly_negative_Int() {
-        val value: Int = Random.nextInt(Int.MIN_VALUE..-1)
+        val value: Int = StrictlyNegativeInt.range.random()
         value.toStrictlyNegativeInt()
             .getOrThrow()
             .value assertEquals value
