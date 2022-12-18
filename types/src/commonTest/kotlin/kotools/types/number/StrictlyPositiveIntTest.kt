@@ -8,10 +8,14 @@ import kotlin.random.Random
 import kotlin.random.nextInt
 import kotlin.test.Test
 
+internal val StrictlyPositiveInt.Companion.range: IntRange by lazy {
+    1..Int.MAX_VALUE
+}
+
 class StrictlyPositiveIntTest {
     @Test
-    fun toString_should_behave_like_an_Int(): Unit = Random
-        .nextInt(1..Int.MAX_VALUE)
+    fun toString_should_behave_like_an_Int(): Unit = StrictlyPositiveInt.range
+        .random()
         .toStrictlyPositiveInt()
         .getOrThrow()
         .run { toString() assertEquals "$value" }

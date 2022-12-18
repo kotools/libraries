@@ -8,7 +8,7 @@ import kotlin.random.Random
 import kotlin.random.nextInt
 import kotlin.test.Test
 
-private val StrictlyNegativeInt.Companion.range: IntRange by lazy {
+internal val StrictlyNegativeInt.Companion.range: IntRange by lazy {
     Int.MIN_VALUE..-1
 }
 
