@@ -21,11 +21,8 @@ All notable changes to this project will be documented in this file.
 
 #### Added
 
-- The `toNotBlankString` function to the `ExplicitInt`, `Collection` and `Map`
-  types ([#119](https://github.com/kotools/libraries/issues/119)).
-- The `toNonZeroInt` function to the `StrictlyPositiveInt` and
-  `StrictlyNegativeInt` types
-  ([#121](https://github.com/kotools/libraries/issues/121)).
+The `toNotBlankString` function to the `ExplicitInt`, `Collection` and `Map`
+types ([#119](https://github.com/kotools/libraries/issues/119)).
 
 #### Removed
 
