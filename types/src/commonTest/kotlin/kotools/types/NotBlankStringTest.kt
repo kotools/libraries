@@ -76,3 +76,8 @@ class NotBlankStringTest {
             .toString() assertEquals "$map"
     }
 }
+
+@Throws(IllegalArgumentException::class)
+private fun String.toNotBlankStringOrThrow(): NotBlankString =
+    toNotBlankString()
+        .getOrThrow()

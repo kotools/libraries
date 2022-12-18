@@ -51,17 +51,14 @@ internal object NotBlankStringSerializer : Serializer<NotBlankString, String>(
 public fun String.toNotBlankString(): Result<NotBlankString> =
     NotBlankString of this
 
-@Throws(IllegalArgumentException::class)
-internal fun String.toNotBlankStringOrThrow(): NotBlankString =
-    toNotBlankString()
-        .getOrThrow()
-
 /** Returns this collection's string representation as a [NotBlankString]. */
 @SinceKotools(Types, "4.0")
 public fun Collection<*>.toNotBlankString(): NotBlankString = toString()
-    .toNotBlankStringOrThrow()
+    .toNotBlankString()
+    .getOrThrow()
 
 /** Returns this map's string representation as a [NotBlankString]. */
 @SinceKotools(Types, "4.0")
 public fun Map<*, *>.toNotBlankString(): NotBlankString = toString()
-    .toNotBlankStringOrThrow()
+    .toNotBlankString()
+    .getOrThrow()
