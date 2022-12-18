@@ -60,20 +60,6 @@ class NotBlankStringTest {
             .isNotBlank()
             .assertTrue()
     }
-
-    @Test
-    fun explicitInt_toNotBlankString_should_pass() {
-        val explicitInts: NotEmptySet<ExplicitInt> = notEmptySetOf(
-            NonZeroInt.random(),
-            PositiveInt.random(),
-            NegativeInt.random(),
-            StrictlyPositiveInt.random(),
-            StrictlyNegativeInt.random()
-        )
-        val x: ExplicitInt = explicitInts.random()
-        val result: NotBlankString = x.toNotBlankString()
-        "$result" assertEquals "$x"
-    }
 }
 
 @Throws(IllegalArgumentException::class)
