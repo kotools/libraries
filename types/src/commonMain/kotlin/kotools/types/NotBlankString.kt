@@ -56,9 +56,3 @@ public fun String.toNotBlankString(): Result<NotBlankString> =
 public fun Collection<*>.toNotBlankString(): NotBlankString = toString()
     .toNotBlankString()
     .getOrThrow()
-
-/** Returns this map's string representation as a [NotBlankString]. */
-@SinceKotools(Types, "4.0")
-public fun Map<*, *>.toNotBlankString(): NotBlankString = toString()
-    .toNotBlankString()
-    .getOrThrow()

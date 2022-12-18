@@ -68,13 +68,6 @@ class NotBlankStringTest {
         collection.toNotBlankString()
             .toString() assertEquals "$collection"
     }
-
-    @Test
-    fun map_toNotBlankString_should_pass() {
-        val map: Map<Char, Int> = notEmptyMapOf('a' to 1, 'b' to 2, 'c' to 3)
-        map.toNotBlankString()
-            .toString() assertEquals "$map"
-    }
 }
 
 @Throws(IllegalArgumentException::class)
