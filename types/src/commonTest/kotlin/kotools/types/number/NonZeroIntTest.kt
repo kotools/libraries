@@ -20,7 +20,7 @@ class NonZeroIntTest {
 
     @Test
     fun int_toNonZeroInt_should_fail_with_an_Int_that_equals_zero() {
-        val result: Result<NonZeroInt> = 0.toNonZeroInt()
+        val result: Result<NonZeroInt> = ZeroInt.value.toNonZeroInt()
         assertFailsWith<IllegalArgumentException>(result::getOrThrow)
             .message
             .assertNotNull()

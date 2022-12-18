@@ -6,7 +6,7 @@ import kotools.assert.assertNotNull
 import kotools.assert.assertTrue
 import kotlin.test.Test
 
-internal val negativeIntRange: IntRange = Int.MIN_VALUE..-1
+internal val negativeIntRange: IntRange = Int.MIN_VALUE..ZeroInt.value
 
 class NegativeIntTest {
     @Test

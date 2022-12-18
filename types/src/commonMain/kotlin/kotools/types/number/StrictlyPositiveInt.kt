@@ -14,7 +14,7 @@ public value class StrictlyPositiveInt
 private constructor(override val value: Int) : NonZeroInt, PositiveInt {
     internal companion object {
         infix fun of(value: Int): Result<StrictlyPositiveInt> = value
-            .takeIf { it > 0 }
+            .takeIf { it > ZeroInt.value }
             ?.toSuccessfulResult(::StrictlyPositiveInt)
             ?: Result.failure(value shouldBe aStrictlyPositiveNumber)
     }

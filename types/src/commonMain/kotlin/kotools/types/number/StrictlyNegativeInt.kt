@@ -14,7 +14,7 @@ public value class StrictlyNegativeInt
 private constructor(override val value: Int) : NonZeroInt, NegativeInt {
     internal companion object {
         infix fun of(value: Int): Result<StrictlyNegativeInt> = value
-            .takeIf { it < 0 }
+            .takeIf { it < ZeroInt.value }
             ?.toSuccessfulResult(::StrictlyNegativeInt)
             ?: Result.failure(value shouldBe aStrictlyNegativeNumber)
     }

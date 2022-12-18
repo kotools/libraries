@@ -15,7 +15,7 @@ public sealed interface NegativeInt : AnyInt
  */
 @SinceKotools(Types, "1.1")
 public fun Int.toNegativeInt(): Result<NegativeInt> = when {
-    this == 0 -> Result.success(ZeroInt)
-    this < 0 -> toStrictlyNegativeInt()
+    this == ZeroInt.value -> Result.success(ZeroInt)
+    this < ZeroInt.value -> toStrictlyNegativeInt()
     else -> Result.failure(this shouldBe aNegativeNumber)
 }

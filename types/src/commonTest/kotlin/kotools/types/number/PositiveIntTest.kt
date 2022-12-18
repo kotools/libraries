@@ -6,7 +6,7 @@ import kotools.assert.assertNotNull
 import kotools.assert.assertTrue
 import kotlin.test.Test
 
-internal val positiveIntRange: IntRange = 0..Int.MAX_VALUE
+internal val positiveIntRange: IntRange = ZeroInt.value..Int.MAX_VALUE
 
 class PositiveIntTest {
     @Test
