@@ -50,9 +50,3 @@ internal object NotBlankStringSerializer : Serializer<NotBlankString, String>(
 @SinceKotools(Types, "3.2")
 public fun String.toNotBlankString(): Result<NotBlankString> =
     NotBlankString of this
-
-/** Returns this collection's string representation as a [NotBlankString]. */
-@SinceKotools(Types, "4.0")
-public fun Collection<*>.toNotBlankString(): NotBlankString = toString()
-    .toNotBlankString()
-    .getOrThrow()

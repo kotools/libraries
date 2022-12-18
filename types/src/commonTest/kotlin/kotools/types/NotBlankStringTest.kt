@@ -4,7 +4,6 @@ import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import kotools.assert.*
-import kotlin.random.Random
 import kotlin.test.Test
 
 class NotBlankStringTest {
@@ -60,13 +59,6 @@ class NotBlankStringTest {
             .assertNotNull()
             .isNotBlank()
             .assertTrue()
-    }
-
-    @Test
-    fun collection_toNotBlankString_should_pass() {
-        val collection: Collection<Int> = List(3) { Random.nextInt() }
-        collection.toNotBlankString()
-            .toString() assertEquals "$collection"
     }
 }
 
