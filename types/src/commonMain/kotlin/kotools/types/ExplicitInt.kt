@@ -21,9 +21,3 @@ internal sealed class ExplicitIntSerializer<I : ExplicitInt>(
     toDelegatedType = ExplicitInt::toInt,
     toType = builder
 )
-
-/** Returns this integer's string representation as a [NotBlankString]. */
-@SinceKotools(Types, "4.0")
-public fun ExplicitInt.toNotBlankString(): NotBlankString = toString()
-    .toNotBlankString()
-    .getOrThrow()
