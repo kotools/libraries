@@ -1,12 +1,11 @@
-package kotools.types
+package kotools.types.collection
 
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import kotools.assert.assertEquals
 import kotools.assert.assertFailsWith
-import kotools.assert.assertNotNull
-import kotools.assert.assertTrue
+import kotools.types.assertHasAMessage
 import kotlin.random.Random
 import kotlin.test.Test
 import kotlin.test.assertContentEquals
@@ -43,10 +42,7 @@ class NotEmptyListTest {
         val result: Result<NotEmptyList<Int>> = emptyList<Int>()
             .toNotEmptyList()
         assertFailsWith<IllegalArgumentException>(result::getOrThrow)
-            .message
-            .assertNotNull()
-            .isNotBlank()
-            .assertTrue()
+            .assertHasAMessage()
     }
 
     @Test
@@ -73,8 +69,6 @@ class NotEmptyListTest {
         val exception: IllegalArgumentException = assertFailsWith {
             Json.decodeFromString<NotEmptyList<Int>>(encoded)
         }
-        exception.message.assertNotNull()
-            .isNotBlank()
-            .assertTrue()
+        exception.assertHasAMessage()
     }
 }

@@ -26,8 +26,11 @@ Hierarchy of `AnyInt` representing integers
 
 #### Changed
 
-Move the `NotBlankString` type to the `kotools.types.text` package
-([#133](https://github.com/kotools/libraries/issues/133)).
+- Move the `NotBlankString` type to the `kotools.types.text` package
+  ([#133](https://github.com/kotools/libraries/issues/133)).
+- Move the following types to the `kotools.types.collection` package:
+  `NotEmptyList`, `NotEmptySet` and `NotEmpty`
+  ([#138](https://github.com/kotools/libraries/issues/138)).
 
 #### Removed
 

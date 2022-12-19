@@ -4,8 +4,7 @@ import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import kotools.assert.assertEquals
 import kotools.assert.assertFailsWith
-import kotools.assert.assertNotNull
-import kotools.assert.assertTrue
+import kotools.types.assertHasAMessage
 import kotlin.test.Test
 
 class NonZeroIntTest {
@@ -27,10 +26,7 @@ class NonZeroIntTest {
     fun int_toNonZeroInt_should_fail_with_an_Int_that_equals_zero() {
         val result: Result<NonZeroInt> = ZeroInt.value.toNonZeroInt()
         assertFailsWith<IllegalArgumentException>(result::getOrThrow)
-            .message
-            .assertNotNull()
-            .isNotBlank()
-            .assertTrue()
+            .assertHasAMessage()
     }
 
     @Test
@@ -59,8 +55,6 @@ class NonZeroIntTest {
         val exception: IllegalArgumentException = assertFailsWith {
             Json.decodeFromString(NonZeroIntSerializer, encoded)
         }
-        exception.message.assertNotNull()
-            .isNotBlank()
-            .assertTrue()
+        exception.assertHasAMessage()
     }
 }

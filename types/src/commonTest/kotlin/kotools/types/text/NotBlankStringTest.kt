@@ -4,6 +4,7 @@ import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import kotools.assert.*
+import kotools.types.assertHasAMessage
 import kotlin.test.Test
 
 class NotBlankStringTest {
@@ -14,6 +15,21 @@ class NotBlankStringTest {
         val result: Int = x.compareTo(y)
         val expectedResult: Int = "$x".compareTo("$y")
         result assertEquals expectedResult
+    }
+
+    @Test
+    fun string_toNotBlankString_should_pass_with_a_not_blank_String() {
+        val value = "hello world"
+        value.toNotBlankString()
+            .getOrThrow()
+            .toString() assertEquals value
+    }
+
+    @Test
+    fun string_toNotBlankString_should_fail_with_a_blank_String() {
+        val result: Result<NotBlankString> = "   ".toNotBlankString()
+        assertFailsWith<IllegalArgumentException>(result::getOrThrow)
+            .assertHasAMessage()
     }
 
     @Test
@@ -38,27 +54,7 @@ class NotBlankStringTest {
         val encoded: String = Json.encodeToString(value)
         val error: IllegalArgumentException =
             assertFailsWith { Json.decodeFromString<NotBlankString>(encoded) }
-        error.message.assertNotNull()
-            .isNotBlank()
-            .assertTrue()
-    }
-
-    @Test
-    fun string_toNotBlankString_should_pass_with_a_not_blank_String() {
-        val value = "hello world"
-        value.toNotBlankString()
-            .getOrThrow()
-            .toString() assertEquals value
-    }
-
-    @Test
-    fun string_toNotBlankString_should_fail_with_a_blank_String() {
-        val result: Result<NotBlankString> = "   ".toNotBlankString()
-        assertFailsWith<IllegalArgumentException>(result::getOrThrow)
-            .message
-            .assertNotNull()
-            .isNotBlank()
-            .assertTrue()
+        error.assertHasAMessage()
     }
 }
 

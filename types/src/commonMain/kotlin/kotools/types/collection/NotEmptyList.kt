@@ -1,10 +1,12 @@
-package kotools.types
+package kotools.types.collection
 
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.builtins.ListSerializer
 import kotools.shared.Project.Types
 import kotools.shared.SinceKotools
+import kotools.types.Serializer
+import kotools.types.toSuccessfulResult
 
 /**
  * Representation of lists that contain at least one element.
@@ -12,7 +14,7 @@ import kotools.shared.SinceKotools
  * @param E The type of elements contained in this list.
  */
 @Serializable(NotEmptyListSerializer::class)
-@SinceKotools(Types, "3.2")
+@SinceKotools(Types, "4.0")
 public class NotEmptyList<out E>
 private constructor(private val elements: List<E>) : List<E> by elements {
     internal companion object {
@@ -26,18 +28,11 @@ private constructor(private val elements: List<E>) : List<E> by elements {
     override fun toString(): String = "$elements"
 }
 
-internal class NotEmptyListSerializer<E>(elementSerializer: KSerializer<E>) :
-    Serializer<NotEmptyList<E>, List<E>>(
-        delegate = ListSerializer(elementSerializer),
-        toDelegatedType = { it },
-        toType = List<E>::toNotEmptyList
-    )
-
 /**
  * Creates a [NotEmptyList] starting with a [head] and containing all the
  * elements of the optional [tail].
  */
-@SinceKotools(Types, "3.2")
+@SinceKotools(Types, "4.0")
 public fun <E> notEmptyListOf(head: E, vararg tail: E): NotEmptyList<E> {
     val elements: List<E> = listOf(head) + tail
     return elements.toNotEmptyList()
@@ -48,6 +43,13 @@ public fun <E> notEmptyListOf(head: E, vararg tail: E): NotEmptyList<E> {
  * Returns a [NotEmptyList] containing all the elements of this collection, or
  * an [IllegalArgumentException] if this collection is empty.
  */
-@SinceKotools(Types, "3.2")
+@SinceKotools(Types, "4.0")
 public fun <E> Collection<E>.toNotEmptyList(): Result<NotEmptyList<E>> =
     NotEmptyList of this
+
+internal class NotEmptyListSerializer<E>(elementSerializer: KSerializer<E>) :
+    Serializer<NotEmptyList<E>, List<E>>(
+        delegate = ListSerializer(elementSerializer),
+        toDelegatedType = { it },
+        toType = List<E>::toNotEmptyList
+    )

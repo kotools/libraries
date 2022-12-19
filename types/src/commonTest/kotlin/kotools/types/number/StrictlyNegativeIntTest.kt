@@ -5,8 +5,7 @@ import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import kotools.assert.assertEquals
 import kotools.assert.assertFailsWith
-import kotools.assert.assertNotNull
-import kotools.assert.assertTrue
+import kotools.types.assertHasAMessage
 import kotlin.test.Test
 
 internal val strictlyNegativeIntRange: IntRange = Int.MIN_VALUE..-1
@@ -33,10 +32,7 @@ class StrictlyNegativeIntTest {
         val result: Result<StrictlyNegativeInt> = positiveIntRange.random()
             .toStrictlyNegativeInt()
         assertFailsWith<IllegalArgumentException>(result::getOrThrow)
-            .message
-            .assertNotNull()
-            .isNotBlank()
-            .assertTrue()
+            .assertHasAMessage()
     }
 
     @Test
@@ -63,8 +59,6 @@ class StrictlyNegativeIntTest {
         val exception: IllegalArgumentException = assertFailsWith {
             Json.decodeFromString<StrictlyNegativeInt>(encoded)
         }
-        exception.message.assertNotNull()
-            .isNotBlank()
-            .assertTrue()
+        exception.assertHasAMessage()
     }
 }

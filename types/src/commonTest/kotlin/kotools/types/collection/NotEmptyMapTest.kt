@@ -1,12 +1,12 @@
-package kotools.types
+package kotools.types.collection
 
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import kotools.assert.assertEquals
 import kotools.assert.assertFailsWith
-import kotools.assert.assertNotNull
 import kotools.assert.assertTrue
+import kotools.types.assertHasAMessage
 import kotlin.random.Random
 import kotlin.test.Test
 
@@ -44,7 +44,7 @@ class NotEmptyMapTest {
         val result: Result<NotEmptyMap<String, Int>> = emptyMap<String, Int>()
             .toNotEmptyMap()
         assertFailsWith<IllegalArgumentException>(result::getOrThrow)
-            .shouldHaveAMessage()
+            .assertHasAMessage()
     }
 
     @Test
@@ -71,7 +71,7 @@ class NotEmptyMapTest {
         val exception: IllegalArgumentException = assertFailsWith {
             Json.decodeFromString<NotEmptyMap<String, Int>>(encoded)
         }
-        exception.shouldHaveAMessage()
+        exception.assertHasAMessage()
     }
 }
 
@@ -82,7 +82,3 @@ private infix fun <K, V> Map<K, V>.shouldEqual(other: Map<K, V>) {
         it.value assertEquals other[it.key]
     }
 }
-
-private fun Throwable.shouldHaveAMessage(): Unit = message.assertNotNull()
-    .isNotBlank()
-    .assertTrue()

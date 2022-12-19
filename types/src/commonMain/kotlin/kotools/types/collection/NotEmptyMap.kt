@@ -1,10 +1,12 @@
-package kotools.types
+package kotools.types.collection
 
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.builtins.MapSerializer
 import kotools.shared.Project.Types
 import kotools.shared.SinceKotools
+import kotools.types.Serializer
+import kotools.types.toSuccessfulResult
 
 /**
  * Representation of maps that contain at least one entry.
@@ -13,7 +15,7 @@ import kotools.shared.SinceKotools
  * @param V The type of map values.
  */
 @Serializable(NotEmptyMapSerializer::class)
-@SinceKotools(Types, "3.2")
+@SinceKotools(Types, "4.0")
 public class NotEmptyMap<K, out V>
 private constructor(private val map: Map<K, V>) : Map<K, V> by map {
     internal companion object {
@@ -28,20 +30,11 @@ private constructor(private val map: Map<K, V>) : Map<K, V> by map {
     override fun toString(): String = "$map"
 }
 
-internal class NotEmptyMapSerializer<K, V>(
-    keySerializer: KSerializer<K>,
-    valueSerializer: KSerializer<V>
-) : Serializer<NotEmptyMap<K, V>, Map<K, V>>(
-    delegate = MapSerializer(keySerializer, valueSerializer),
-    toDelegatedType = { it },
-    toType = Map<K, V>::toNotEmptyMap
-)
-
 /**
  * Creates a [NotEmptyMap] starting with a [head] and containing all the entries
  * of the optional [tail].
  */
-@SinceKotools(Types, "3.2")
+@SinceKotools(Types, "4.0")
 public fun <K, V> notEmptyMapOf(
     head: Pair<K, V>,
     vararg tail: Pair<K, V>
@@ -53,6 +46,15 @@ public fun <K, V> notEmptyMapOf(
  * Returns a [NotEmptyMap] containing all the entries of this map, or an
  * [IllegalArgumentException] if this map is empty.
  */
-@SinceKotools(Types, "3.2")
+@SinceKotools(Types, "4.0")
 public fun <K, V> Map<K, V>.toNotEmptyMap(): Result<NotEmptyMap<K, V>> =
     NotEmptyMap of this
+
+internal class NotEmptyMapSerializer<K, V>(
+    keySerializer: KSerializer<K>,
+    valueSerializer: KSerializer<V>
+) : Serializer<NotEmptyMap<K, V>, Map<K, V>>(
+    delegate = MapSerializer(keySerializer, valueSerializer),
+    toDelegatedType = { it },
+    toType = Map<K, V>::toNotEmptyMap
+)
