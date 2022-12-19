@@ -19,6 +19,11 @@ All notable changes to this project will be documented in this file.
 
 ### All platforms
 
+#### Added
+
+Hierarchy of `AnyInt` representing integers
+([#132](https://github.com/kotools/libraries/issues/132)).
+
 #### Removed
 
 Deprecated declarations from version 3
