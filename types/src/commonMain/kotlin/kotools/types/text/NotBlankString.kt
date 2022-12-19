@@ -1,9 +1,11 @@
-package kotools.types
+package kotools.types.text
 
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.builtins.serializer
 import kotools.shared.Project.Types
 import kotools.shared.SinceKotools
+import kotools.types.Serializer
+import kotools.types.toSuccessfulResult
 import kotlin.jvm.JvmInline
 
 /**
@@ -12,7 +14,7 @@ import kotlin.jvm.JvmInline
  */
 @JvmInline
 @Serializable(NotBlankStringSerializer::class)
-@SinceKotools(Types, "3.2")
+@SinceKotools(Types, "4.0")
 public value class NotBlankString
 private constructor(private val value: String) : Comparable<NotBlankString> {
     internal companion object {
@@ -37,16 +39,16 @@ private constructor(private val value: String) : Comparable<NotBlankString> {
     override fun toString(): String = value
 }
 
+/**
+ * Returns this string as a [NotBlankString], or [IllegalArgumentException] if
+ * this string is blank.
+ */
+@SinceKotools(Types, "4.0")
+public fun String.toNotBlankString(): Result<NotBlankString> =
+    NotBlankString of this
+
 internal object NotBlankStringSerializer : Serializer<NotBlankString, String>(
     delegate = String.serializer(),
     toDelegatedType = NotBlankString::toString,
     toType = String::toNotBlankString
 )
-
-/**
- * Returns this string as a [NotBlankString], or [IllegalArgumentException] if
- * this string is blank.
- */
-@SinceKotools(Types, "3.2")
-public fun String.toNotBlankString(): Result<NotBlankString> =
-    NotBlankString of this

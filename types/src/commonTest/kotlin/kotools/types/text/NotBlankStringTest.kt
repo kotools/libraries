@@ -1,4 +1,4 @@
-package kotools.types
+package kotools.types.text
 
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
