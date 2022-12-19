@@ -7,14 +7,14 @@ import kotools.assert.assertEquals
 import kotools.assert.assertFailsWith
 import kotools.assert.assertNotNull
 import kotools.assert.assertTrue
+import kotlin.random.Random
 import kotlin.test.Test
 import kotlin.test.assertContentEquals
 
 class NotEmptyListTest {
     @Test
     fun toString_should_behave_like_a_Collection() {
-        val collection: Collection<Int> = List(3) { NonZeroInt.random() }
-            .map(NonZeroInt::toInt)
+        val collection: Collection<Int> = List(3) { Random.nextInt() }
         collection.toNotEmptyList()
             .getOrThrow()
             .toString() assertEquals "$collection"
@@ -22,10 +22,8 @@ class NotEmptyListTest {
 
     @Test
     fun notEmptyListOf_should_pass() {
-        val head: Int = NonZeroInt.random()
-            .toInt()
-        val tail: Array<Int> = List(2) { NonZeroInt.random() }
-            .map(NonZeroInt::toInt)
+        val head: Int = Random.nextInt()
+        val tail: Array<Int> = List(2) { Random.nextInt() }
             .toTypedArray()
         val result: NotEmptyList<Int> = notEmptyListOf(head, *tail)
         val expected: List<Int> = listOf(head) + tail
@@ -34,8 +32,7 @@ class NotEmptyListTest {
 
     @Test
     fun collection_toNotEmptyList_should_pass_with_a_not_empty_Collection() {
-        val collection: Collection<Int> = List(3) { NonZeroInt.random() }
-            .map(NonZeroInt::toInt)
+        val collection: Collection<Int> = List(3) { Random.nextInt() }
         val result: NotEmptyList<Int> = collection.toNotEmptyList()
             .getOrThrow()
         assertContentEquals(collection, result)
@@ -54,8 +51,7 @@ class NotEmptyListTest {
 
     @Test
     fun serialization_should_behave_like_a_List() {
-        val list: List<Int> = List(3) { NonZeroInt.random() }
-            .map(NonZeroInt::toInt)
+        val list: List<Int> = List(3) { Random.nextInt() }
         val notEmptyList: NotEmptyList<Int> = list.toNotEmptyList()
             .getOrThrow()
         val result: String = Json.encodeToString(notEmptyList)
@@ -64,8 +60,7 @@ class NotEmptyListTest {
 
     @Test
     fun deserialization_should_pass_with_a_not_empty_Collection() {
-        val list: List<Int> = List(3) { NonZeroInt.random() }
-            .map(NonZeroInt::toInt)
+        val list: List<Int> = List(3) { Random.nextInt() }
         val encoded: String = Json.encodeToString(list)
         val result: NotEmptyList<Int> = Json.decodeFromString(encoded)
         assertContentEquals(list, result)
