@@ -3,8 +3,6 @@ package kotools.types.number
 import kotlinx.serialization.Serializable
 import kotools.shared.Project.Types
 import kotools.shared.SinceKotools
-import kotools.types.aStrictlyNegativeNumber
-import kotools.types.shouldBe
 import kotools.types.toSuccessfulResult
 import kotlin.jvm.JvmInline
 

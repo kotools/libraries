@@ -1,10 +1,4 @@
-package kotools.types
-
-internal val otherThanZero = NumberErrorDescription.NonZero
-internal val aPositiveNumber = NumberErrorDescription.Positive
-internal val aNegativeNumber = NumberErrorDescription.Negative
-internal val aStrictlyPositiveNumber = NumberErrorDescription.StrictlyPositive
-internal val aStrictlyNegativeNumber = NumberErrorDescription.StrictlyNegative
+package kotools.types.number
 
 internal sealed class NumberErrorDescription(private val value: String) {
     override fun toString(): String = value
@@ -16,8 +10,11 @@ internal sealed class NumberErrorDescription(private val value: String) {
     object StrictlyNegative : NumberErrorDescription("strictly negative")
 }
 
-internal object EmptyCollectionError :
-    IllegalArgumentException("Given collection shouldn't be empty.")
+internal val otherThanZero = NumberErrorDescription.NonZero
+internal val aPositiveNumber = NumberErrorDescription.Positive
+internal val aNegativeNumber = NumberErrorDescription.Negative
+internal val aStrictlyPositiveNumber = NumberErrorDescription.StrictlyPositive
+internal val aStrictlyNegativeNumber = NumberErrorDescription.StrictlyNegative
 
 internal infix fun <N : Number> N.shouldBe(
     description: NumberErrorDescription

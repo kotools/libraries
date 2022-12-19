@@ -3,8 +3,6 @@ package kotools.types.number
 import kotlinx.serialization.Serializable
 import kotools.shared.Project.Types
 import kotools.shared.SinceKotools
-import kotools.types.otherThanZero
-import kotools.types.shouldBe
 
 /** Representation of integers other than [zero][ZeroInt]. */
 @Serializable(NonZeroIntSerializer::class)
