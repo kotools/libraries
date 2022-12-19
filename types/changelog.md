@@ -24,6 +24,11 @@ All notable changes to this project will be documented in this file.
 Hierarchy of `AnyInt` representing integers
 ([#132](https://github.com/kotools/libraries/issues/132)).
 
+#### Changed
+
+Move the `NotBlankString` type to the `kotools.types.text` package
+([#133](https://github.com/kotools/libraries/issues/133)).
+
 #### Removed
 
 Deprecated declarations from version 3
