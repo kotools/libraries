@@ -21,8 +21,8 @@ All notable changes to this project will be documented in this file.
 
 #### Removed
 
-- All deprecated declarations
-  ([#37](https://github.com/kotools/libraries/issues/37)).
+Deprecated declarations from version 3
+([#37](https://github.com/kotools/libraries/issues/37)).
 
 ## Version 3.2.0 - 2022/12/13
 
