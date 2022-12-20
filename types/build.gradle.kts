@@ -13,7 +13,7 @@ plugins {
     signing
 }
 
-version = "4.0.0-beta"
+version = "4.0.0-SNAPSHOT"
 
 dependencies {
     // Kotlin
