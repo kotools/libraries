@@ -1,10 +1,16 @@
 package kotools.types.text
 
+import kotlinx.serialization.KSerializer
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.builtins.serializer
+import kotlinx.serialization.SerializationException
+import kotlinx.serialization.descriptors.PrimitiveKind
+import kotlinx.serialization.descriptors.PrimitiveSerialDescriptor
+import kotlinx.serialization.descriptors.SerialDescriptor
+import kotlinx.serialization.encoding.Decoder
+import kotlinx.serialization.encoding.Encoder
 import kotools.shared.Project.Types
 import kotools.shared.SinceKotools
-import kotools.types.Serializer
+import kotools.types.Package
 import kotools.types.number.StrictlyPositiveInt
 import kotools.types.number.toStrictlyPositiveInt
 import kotools.types.toSuccessfulResult
@@ -25,9 +31,7 @@ public value class NotBlankString private constructor(
         infix fun of(value: String): Result<NotBlankString> = value
             .takeIf(String::isNotBlank)
             ?.toSuccessfulResult(::NotBlankString)
-            ?: Result.failure(
-                IllegalArgumentException("Given string shouldn't be blank.")
-            )
+            ?: Result.failure(NotBlankStringConstructionException)
     }
 
     /** Returns the length of this [value]. */
@@ -56,8 +60,25 @@ public value class NotBlankString private constructor(
 public fun String.toNotBlankString(): Result<NotBlankString> =
     NotBlankString of this
 
-internal object NotBlankStringSerializer : Serializer<NotBlankString, String>(
-    delegate = String.serializer(),
-    toDelegatedType = NotBlankString::value,
-    toType = String::toNotBlankString
-)
+internal object NotBlankStringSerializer : KSerializer<NotBlankString> {
+    override val descriptor: SerialDescriptor = PrimitiveSerialDescriptor(
+        "${Package.text}.NotBlankString",
+        PrimitiveKind.STRING
+    )
+
+    override fun serialize(encoder: Encoder, value: NotBlankString): Unit =
+        encoder.encodeString("$value")
+
+    @Throws(SerializationException::class)
+    override fun deserialize(decoder: Decoder): NotBlankString = decoder
+        .decodeString()
+        .toNotBlankString()
+        .getOrNull()
+        ?: throw NotBlankStringConstructionException.toSerializationException()
+}
+
+private object NotBlankStringConstructionException :
+    IllegalArgumentException("Given string shouldn't be blank.") {
+    fun toSerializationException(): SerializationException =
+        SerializationException(message)
+}

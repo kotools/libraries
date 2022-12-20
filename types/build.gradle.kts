@@ -18,8 +18,9 @@ version = "4.0.0-SNAPSHOT"
 dependencies {
     // Kotlin
     commonMainImplementation(platform(kotlin("bom")))
-    commonMainImplementation(kotlinx.serialization.json)
+    commonMainImplementation(kotlinx.serialization.core)
     commonTestImplementation(kotlin("test"))
+    commonTestImplementation(kotlinx.serialization.json)
 
     // Kotools
     commonMainImplementation(project(":shared"))

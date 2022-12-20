@@ -1,10 +1,13 @@
 package kotools.types.text
 
+import kotlinx.serialization.ExperimentalSerializationApi
+import kotlinx.serialization.SerializationException
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import kotools.assert.assertEquals
 import kotools.assert.assertFailsWith
+import kotools.types.Package
 import kotools.types.assertHasAMessage
 import kotlin.test.Test
 
@@ -43,6 +46,14 @@ class NotBlankStringTest {
         assertFailsWith<IllegalArgumentException>(result::getOrThrow)
             .assertHasAMessage()
     }
+}
+
+class NotBlankStringSerializerTest {
+    @ExperimentalSerializationApi
+    @Test
+    fun descriptor_should_be_named_with_the_qualified_name_of_NotBlankString(): Unit =
+        NotBlankStringSerializer.descriptor
+            .serialName assertEquals "${Package.text}.NotBlankString"
 
     @Test
     fun serialization_should_behave_like_a_String() {
@@ -62,11 +73,10 @@ class NotBlankStringTest {
     }
 
     @Test
-    fun deserialization_should_fail_with_a_blank_String() {
-        val value = " "
-        val encoded: String = Json.encodeToString(value)
-        val error: IllegalArgumentException =
-            assertFailsWith { Json.decodeFromString<NotBlankString>(encoded) }
-        error.assertHasAMessage()
-    }
+    fun deserialization_should_fail_with_a_blank_String(): Unit = Json
+        .encodeToString(" ")
+        .let<String, SerializationException> {
+            assertFailsWith { Json.decodeFromString<NotBlankString>(it) }
+        }
+        .assertHasAMessage()
 }

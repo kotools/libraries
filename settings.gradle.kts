@@ -15,7 +15,11 @@ dependencyResolutionManagement.versionCatalogs {
             return "org.jetbrains.$prefix:$prefix-$module:$version"
         }
         library("coroutines.core", kotlinx("coroutines-core", "1.5.2"))
-        library("serialization.json", kotlinx("serialization-json", "1.3.1"))
+        "serialization".let {
+            val version = "1.3.1"
+            library("$it.core", kotlinx("$it-core", version))
+            library("$it.json", kotlinx("$it-json", version))
+        }
     }
     create("kotools") {
         fun kotools(module: String, version: String): String =
