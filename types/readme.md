@@ -10,21 +10,17 @@ Kotools Types is a lightweight library that provides commonly used types for
 > _Windows x64_ platforms.
 
 ```kotlin
-import kotools.types.number.StrictlyPositiveInt
-import kotools.types.number.toStrictlyPositiveInt
-import kotools.types.text.NotBlankString
-import kotools.types.text.toNotBlankString
+NonZeroInt(1)
+PositiveInt(0)
+StrictlyPositiveInt(1)
+NegativeInt(0)
+StrictlyNegativeInt(-1)
 
-data class Person(val name: NotBlankString, val age: StrictlyPositiveInt)
+NotBlankString("hello")
 
-fun main() {
-    val name: NotBlankString = "Somebody".toNotBlankString()
-        .getOrThrow()
-    val age: StrictlyPositiveInt = 42.toStrictlyPositiveInt()
-        .getOrThrow()
-    val somebody = Person(name, age)
-    println(somebody) // Person(name=Somebody, age=42)
-}
+notEmptyListOf(1, 2, 3)
+notEmptySetOf(4, 5, 6)
+notEmptyMapOf("a" to 1, "b" to 2, "c" to 3)
 ```
 
 [kotlin]: https://kotlinlang.org
