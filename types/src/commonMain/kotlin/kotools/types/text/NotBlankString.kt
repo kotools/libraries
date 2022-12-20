@@ -15,8 +15,10 @@ import kotlin.jvm.JvmInline
 @JvmInline
 @Serializable(NotBlankStringSerializer::class)
 @SinceKotools(Types, "4.0")
-public value class NotBlankString
-private constructor(private val value: String) : Comparable<NotBlankString> {
+public value class NotBlankString private constructor(
+    /** The string to hold. */
+    public val value: String
+) : Comparable<NotBlankString> {
     internal companion object {
         infix fun of(value: String): Result<NotBlankString> = value
             .takeIf(String::isNotBlank)
@@ -27,15 +29,15 @@ private constructor(private val value: String) : Comparable<NotBlankString> {
     }
 
     /**
-     * Compares this string lexicographically with the [other] one for order.
-     * Returns zero if this string equals the [other] one, a negative number if
-     * it's less than the [other] one, or a positive number if it's greater than
-     * the [other] one.
+     * Compares this [value] lexicographically with the [other] value for order.
+     * Returns zero if this [value] equals the [other] value, a negative number
+     * if it's less than the [other] value, or a positive number if it's greater
+     * than the [other] value.
      */
     override fun compareTo(other: NotBlankString): Int =
         value.compareTo(other.value)
 
-    /** Returns this value as a [String]. */
+    /** Returns this [value]. */
     override fun toString(): String = value
 }
 
@@ -49,6 +51,6 @@ public fun String.toNotBlankString(): Result<NotBlankString> =
 
 internal object NotBlankStringSerializer : Serializer<NotBlankString, String>(
     delegate = String.serializer(),
-    toDelegatedType = NotBlankString::toString,
+    toDelegatedType = NotBlankString::value,
     toType = String::toNotBlankString
 )

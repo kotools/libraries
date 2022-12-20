@@ -3,15 +3,18 @@ package kotools.types.text
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
-import kotools.assert.*
+import kotools.assert.assertEquals
+import kotools.assert.assertFailsWith
 import kotools.types.assertHasAMessage
 import kotlin.test.Test
 
 class NotBlankStringTest {
     @Test
     fun compareTo_should_pass() {
-        val x: NotBlankString = "hello".toNotBlankStringOrThrow()
-        val y: NotBlankString = "world".toNotBlankStringOrThrow()
+        val x: NotBlankString = "hello".toNotBlankString()
+            .getOrThrow()
+        val y: NotBlankString = "world".toNotBlankString()
+            .getOrThrow()
         val result: Int = x.compareTo(y)
         val expectedResult: Int = "$x".compareTo("$y")
         result assertEquals expectedResult
@@ -22,7 +25,7 @@ class NotBlankStringTest {
         val value = "hello world"
         value.toNotBlankString()
             .getOrThrow()
-            .toString() assertEquals value
+            .value assertEquals value
     }
 
     @Test
@@ -34,7 +37,8 @@ class NotBlankStringTest {
 
     @Test
     fun serialization_should_behave_like_a_String() {
-        val value: NotBlankString = "hello world".toNotBlankStringOrThrow()
+        val value: NotBlankString = "hello world".toNotBlankString()
+            .getOrThrow()
         val result: String = Json.encodeToString(value)
         val expectedResult: String = Json.encodeToString("$value")
         result assertEquals expectedResult
@@ -45,7 +49,7 @@ class NotBlankStringTest {
         val value = "hello world"
         val encoded: String = Json.encodeToString(value)
         val result: NotBlankString = Json.decodeFromString(encoded)
-        "$result" assertEquals value
+        result.value assertEquals value
     }
 
     @Test
@@ -57,8 +61,3 @@ class NotBlankStringTest {
         error.assertHasAMessage()
     }
 }
-
-@Throws(IllegalArgumentException::class)
-private fun String.toNotBlankStringOrThrow(): NotBlankString =
-    toNotBlankString()
-        .getOrThrow()
