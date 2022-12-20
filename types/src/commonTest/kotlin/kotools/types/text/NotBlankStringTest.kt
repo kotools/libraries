@@ -10,6 +10,15 @@ import kotlin.test.Test
 
 class NotBlankStringTest {
     @Test
+    fun length_should_pass() {
+        val string = "hello world"
+        string.toNotBlankString()
+            .getOrThrow()
+            .length
+            .value assertEquals string.length
+    }
+
+    @Test
     fun compareTo_should_pass() {
         val x: NotBlankString = "hello".toNotBlankString()
             .getOrThrow()
