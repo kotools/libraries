@@ -23,6 +23,7 @@ dependencyResolutionManagement.versionCatalogs {
         library("assert", kotools("assert", "3.0.2"))
         library("csv", kotools("csv", "2.2.1"))
         library("types", kotools("types", "3.2.0"))
+        library("types.next", kotools("types", "4.0.0-beta"))
     }
     create("slf4j") { library("simple", "org.slf4j:slf4j-simple:2.0.3") }
 }

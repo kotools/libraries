@@ -2,8 +2,8 @@ package kotools.csv
 
 import kotools.shared.Project.Csv
 import kotools.shared.SinceKotools
-import kotools.types.NotBlankString
-import kotools.types.toNotBlankString
+import kotools.types.text.NotBlankString
+import kotools.types.text.toNotBlankString
 
 /** Representation of a path pointing to a CSV file. */
 @JvmInline

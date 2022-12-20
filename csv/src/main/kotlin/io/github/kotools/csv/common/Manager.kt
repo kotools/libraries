@@ -2,11 +2,12 @@ package io.github.kotools.csv.common
 
 import kotools.shared.Project.Csv
 import kotools.shared.SinceKotools
-import kotools.types.string.NotBlankString
-import kotools.types.string.notBlankStringOrThrow
+import kotools.types.text.NotBlankString
+import kotools.types.text.toNotBlankString
 
 internal val Manager.filePath: NotBlankString
-    get() = notBlankStringOrThrow("$folder$file")
+    get() = "$folder$file".toNotBlankString()
+        .getOrThrow()
 
 /** Scope for manipulating CSV files. */
 @SinceKotools(Csv, "2.0")

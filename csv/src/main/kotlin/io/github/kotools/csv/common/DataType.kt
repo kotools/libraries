@@ -1,8 +1,7 @@
 package io.github.kotools.csv.common
 
-import kotools.types.string.NotBlankString
-import kotools.types.string.toNotBlankStringOrNull
-import kotools.types.string.toNotBlankStringOrThrow
+import kotools.types.text.NotBlankString
+import kotools.types.text.toNotBlankString
 import kotlin.reflect.KClass
 import kotlin.reflect.KProperty1
 import kotlin.reflect.KType
@@ -33,11 +32,15 @@ private constructor(private val type: KClass<T>) {
         get() = type
             .primaryConstructor!!
             .parameters
-            .mapNotNull { it.name?.toNotBlankStringOrNull() }
+            .mapNotNull {
+                it.name?.toNotBlankString()
+                    ?.getOrNull()
+            }
 
     private val properties: Map<NotBlankString, KProperty1<T, *>>
         get() = type.declaredMemberProperties.associateBy {
-            it.name.toNotBlankStringOrThrow()
+            it.name.toNotBlankString()
+                .getOrThrow()
         }
 
     infix fun createType(record: Map<NotBlankString, String>): T {

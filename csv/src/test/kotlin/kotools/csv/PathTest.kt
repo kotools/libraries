@@ -4,7 +4,7 @@ import kotools.assert.assertEquals
 import kotools.assert.assertFailsWith
 import kotools.assert.assertNotNull
 import kotools.assert.assertTrue
-import kotools.types.toNotBlankString
+import kotools.types.text.toNotBlankString
 import org.junit.jupiter.api.Test
 
 class PathTest {
