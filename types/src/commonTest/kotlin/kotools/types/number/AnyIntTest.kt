@@ -1,6 +1,7 @@
 package kotools.types.number
 
 import kotlinx.serialization.ExperimentalSerializationApi
+import kotlinx.serialization.KSerializer
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import kotools.assert.assertEquals
@@ -40,18 +41,19 @@ class AnyIntTest {
 }
 
 class AnyIntSerializerTest {
+    private val serializer: KSerializer<AnyInt> = AnyIntSerializerImplementation
+
     @ExperimentalSerializationApi
     @Test
     fun descriptor_should_have_the_qualified_name_of_AnyInt_as_serial_name(): Unit =
-        AnyIntSerializer.descriptor
-            .serialName assertEquals "${Package.number}.AnyInt"
+        serializer.descriptor.serialName assertEquals "${Package.number}.AnyInt"
 
     @Test
     fun serialize_should_behave_like_an_Int() {
         val x: AnyInt = strictlyPositiveIntRange.random()
             .toStrictlyPositiveInt()
             .getOrThrow()
-        val result: String = Json.encodeToString(AnyIntSerializer, x)
+        val result: String = Json.encodeToString(serializer, x)
         result assertEquals Json.encodeToString(x.value)
     }
 
@@ -59,7 +61,7 @@ class AnyIntSerializerTest {
     fun deserialize_should_pass_with_an_Int() {
         val value: Int = Random.nextInt()
         val encoded: String = Json.encodeToString(value)
-        val result: AnyInt = Json.decodeFromString(AnyIntSerializer, encoded)
+        val result: AnyInt = Json.decodeFromString(serializer, encoded)
         result.value assertEquals value
     }
 }

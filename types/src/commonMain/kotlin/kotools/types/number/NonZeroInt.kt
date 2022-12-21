@@ -1,15 +1,10 @@
 package kotools.types.number
 
-import kotlinx.serialization.KSerializer
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.SerializationException
-import kotlinx.serialization.descriptors.SerialDescriptor
-import kotlinx.serialization.encoding.Decoder
-import kotlinx.serialization.encoding.Encoder
 import kotools.shared.Project.Types
 import kotools.shared.SinceKotools
 import kotools.types.Package
-import kotools.types.serialization.toIntSerialDescriptor
 import kotools.types.text.NotBlankString
 import kotools.types.text.toNotBlankString
 
@@ -29,19 +24,12 @@ public fun Int.toNonZeroInt(): Result<NonZeroInt> = when {
     else -> Result.failure(this shouldBe otherThanZero)
 }
 
-internal object NonZeroIntSerializer : KSerializer<NonZeroInt> {
-    override val descriptor: SerialDescriptor = "${Package.number}.NonZeroInt"
-        .toNotBlankString()
-        .map(NotBlankString::toIntSerialDescriptor)
-        .getOrThrow()
+internal object NonZeroIntSerializer : AnyIntSerializer<NonZeroInt> {
+    override val serialName: Result<NotBlankString> by lazy(
+        "${Package.number}.NonZeroInt"::toNotBlankString
+    )
 
-    override fun serialize(encoder: Encoder, value: NonZeroInt): Unit =
-        encoder.encodeInt(value.value)
-
-    override fun deserialize(decoder: Decoder): NonZeroInt {
-        val value: Int = decoder.decodeInt()
-        return value.toNonZeroInt()
-            .getOrNull()
-            ?: throw SerializationException(value shouldBe otherThanZero)
-    }
+    override fun deserialize(value: Int): NonZeroInt = value.toNonZeroInt()
+        .getOrNull()
+        ?: throw SerializationException(value shouldBe otherThanZero)
 }

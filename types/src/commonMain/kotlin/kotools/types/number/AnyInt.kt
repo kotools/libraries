@@ -13,7 +13,7 @@ import kotools.types.text.NotBlankString
 import kotools.types.text.toNotBlankString
 
 /** Representation of all integers. */
-@Serializable(AnyIntSerializer::class)
+@Serializable(AnyIntSerializerImplementation::class)
 @SinceKotools(Types, "4.0")
 public sealed interface AnyInt : Comparable<AnyInt> {
     /** The value to hold. */
@@ -31,22 +31,31 @@ public sealed interface AnyInt : Comparable<AnyInt> {
     override fun toString(): String
 }
 
-internal object AnyIntSerializer : KSerializer<AnyInt> {
-    override val descriptor: SerialDescriptor = "${Package.number}.AnyInt"
-        .toNotBlankString()
-        .map(NotBlankString::toIntSerialDescriptor)
-        .getOrThrow()
+internal sealed interface AnyIntSerializer<I : AnyInt> : KSerializer<I> {
+    val serialName: Result<NotBlankString>
 
-    override fun serialize(encoder: Encoder, value: AnyInt): Unit =
+    override val descriptor: SerialDescriptor
+        get() = serialName.map(NotBlankString::toIntSerialDescriptor)
+            .getOrThrow()
+
+    override fun serialize(encoder: Encoder, value: I): Unit =
         encoder.encodeInt(value.value)
 
-    override fun deserialize(decoder: Decoder): AnyInt {
-        val value: Int = decoder.decodeInt()
-        val result: Result<AnyInt> = when {
-            value == 0 -> Result.success(ZeroInt)
-            value > 0 -> value.toStrictlyPositiveInt()
-            else -> value.toStrictlyNegativeInt()
-        }
-        return result.getOrThrow()
-    }
+    fun deserialize(value: Int): I
+
+    override fun deserialize(decoder: Decoder): I = deserialize(
+        decoder.decodeInt()
+    )
+}
+
+internal object AnyIntSerializerImplementation : AnyIntSerializer<AnyInt> {
+    override val serialName: Result<NotBlankString> by lazy(
+        "${Package.number}.AnyInt"::toNotBlankString
+    )
+
+    override fun deserialize(value: Int): AnyInt = when {
+        value == 0 -> Result.success(ZeroInt)
+        value > 0 -> value.toStrictlyPositiveInt()
+        else -> value.toStrictlyNegativeInt()
+    }.getOrThrow()
 }

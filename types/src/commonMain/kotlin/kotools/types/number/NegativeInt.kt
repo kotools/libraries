@@ -1,15 +1,10 @@
 package kotools.types.number
 
-import kotlinx.serialization.KSerializer
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.SerializationException
-import kotlinx.serialization.descriptors.SerialDescriptor
-import kotlinx.serialization.encoding.Decoder
-import kotlinx.serialization.encoding.Encoder
 import kotools.shared.Project.Types
 import kotools.shared.SinceKotools
 import kotools.types.Package
-import kotools.types.serialization.toIntSerialDescriptor
 import kotools.types.text.NotBlankString
 import kotools.types.text.toNotBlankString
 
@@ -29,19 +24,12 @@ public fun Int.toNegativeInt(): Result<NegativeInt> = when {
     else -> Result.failure(this shouldBe aNegativeNumber)
 }
 
-internal object NegativeIntSerializer : KSerializer<NegativeInt> {
-    override val descriptor: SerialDescriptor = "${Package.number}.NegativeInt"
-        .toNotBlankString()
-        .map(NotBlankString::toIntSerialDescriptor)
-        .getOrThrow()
+internal object NegativeIntSerializer : AnyIntSerializer<NegativeInt> {
+    override val serialName: Result<NotBlankString> by lazy(
+        "${Package.number}.NegativeInt"::toNotBlankString
+    )
 
-    override fun serialize(encoder: Encoder, value: NegativeInt): Unit =
-        encoder.encodeInt(value.value)
-
-    override fun deserialize(decoder: Decoder): NegativeInt {
-        val value: Int = decoder.decodeInt()
-        return value.toNegativeInt()
-            .getOrNull()
-            ?: throw SerializationException(value shouldBe aNegativeNumber)
-    }
+    override fun deserialize(value: Int): NegativeInt = value.toNegativeInt()
+        .getOrNull()
+        ?: throw SerializationException(value shouldBe aNegativeNumber)
 }
