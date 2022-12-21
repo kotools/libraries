@@ -1,10 +1,13 @@
 package kotools.types.number
 
+import kotlinx.serialization.ExperimentalSerializationApi
+import kotlinx.serialization.SerializationException
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import kotools.assert.assertEquals
 import kotools.assert.assertFailsWith
+import kotools.types.Package
 import kotools.types.assertHasAMessage
 import kotlin.test.Test
 
@@ -33,6 +36,15 @@ class StrictlyPositiveIntTest {
         assertFailsWith<IllegalArgumentException>(result::getOrThrow)
             .assertHasAMessage()
     }
+}
+
+class StrictlyPositiveIntSerializerTest {
+    @ExperimentalSerializationApi
+    @Test
+    fun descriptor_should_have_the_qualified_name_of_StrictlyPositiveInt_as_serial_name(): Unit =
+        StrictlyPositiveInt.serializer()
+            .descriptor
+            .serialName assertEquals "${Package.number}.StrictlyPositiveInt"
 
     @Test
     fun serialization_should_behave_like_an_Int() {
@@ -55,7 +67,7 @@ class StrictlyPositiveIntTest {
     fun deserialization_should_fail_with_a_negative_Int() {
         val value: Int = negativeIntRange.random()
         val encoded: String = Json.encodeToString(value)
-        val exception: IllegalArgumentException = assertFailsWith {
+        val exception: SerializationException = assertFailsWith {
             Json.decodeFromString<StrictlyPositiveInt>(encoded)
         }
         exception.assertHasAMessage()

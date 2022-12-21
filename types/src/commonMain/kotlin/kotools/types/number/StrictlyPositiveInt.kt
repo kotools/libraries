@@ -1,8 +1,16 @@
 package kotools.types.number
 
+import kotlinx.serialization.KSerializer
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.SerializationException
+import kotlinx.serialization.descriptors.PrimitiveKind
+import kotlinx.serialization.descriptors.PrimitiveSerialDescriptor
+import kotlinx.serialization.descriptors.SerialDescriptor
+import kotlinx.serialization.encoding.Decoder
+import kotlinx.serialization.encoding.Encoder
 import kotools.shared.Project.Types
 import kotools.shared.SinceKotools
+import kotools.types.Package
 import kotools.types.toSuccessfulResult
 import kotlin.jvm.JvmInline
 
@@ -31,4 +39,21 @@ public fun Int.toStrictlyPositiveInt(): Result<StrictlyPositiveInt> =
     StrictlyPositiveInt of this
 
 internal object StrictlyPositiveIntSerializer :
-    AnyIntSerializer<StrictlyPositiveInt>(Int::toStrictlyPositiveInt)
+    KSerializer<StrictlyPositiveInt> {
+    override val descriptor: SerialDescriptor = PrimitiveSerialDescriptor(
+        "${Package.number}.StrictlyPositiveInt",
+        PrimitiveKind.INT
+    )
+
+    override fun serialize(encoder: Encoder, value: StrictlyPositiveInt): Unit =
+        encoder.encodeInt(value.value)
+
+    override fun deserialize(decoder: Decoder): StrictlyPositiveInt {
+        val value: Int = decoder.decodeInt()
+        return value.toStrictlyPositiveInt()
+            .getOrNull()
+            ?: throw SerializationException(
+                value shouldBe aStrictlyPositiveNumber
+            )
+    }
+}
