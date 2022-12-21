@@ -10,12 +10,3 @@ private class IntSerialDescriptor(name: NotBlankString) :
 
 internal fun NotBlankString.toIntSerialDescriptor(): SerialDescriptor =
     IntSerialDescriptor(this)
-
-private class StringSerialDescriptor(name: NotBlankString) :
-    SerialDescriptor by PrimitiveSerialDescriptor(
-        name.value,
-        PrimitiveKind.STRING
-    )
-
-internal fun NotBlankString.toStringSerialDescriptor(): SerialDescriptor =
-    StringSerialDescriptor(this)

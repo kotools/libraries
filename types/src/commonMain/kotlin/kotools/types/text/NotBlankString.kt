@@ -11,7 +11,6 @@ import kotools.shared.SinceKotools
 import kotools.types.Package
 import kotools.types.number.StrictlyPositiveInt
 import kotools.types.number.toStrictlyPositiveInt
-import kotools.types.serialization.toStringSerialDescriptor
 import kotools.types.toSuccessfulResult
 import kotlin.jvm.JvmInline
 
@@ -30,7 +29,7 @@ public value class NotBlankString private constructor(
         infix fun of(value: String): Result<NotBlankString> = value
             .takeIf(String::isNotBlank)
             ?.toSuccessfulResult(::NotBlankString)
-            ?: Result.failure(NotBlankStringConstructionException)
+            ?: Result.failure(NotBlankStringException)
     }
 
     /** Returns the length of this [value]. */
@@ -62,7 +61,7 @@ public fun String.toNotBlankString(): Result<NotBlankString> =
 internal object NotBlankStringSerializer : KSerializer<NotBlankString> {
     override val descriptor: SerialDescriptor = "${Package.text}.NotBlankString"
         .toNotBlankString()
-        .map(NotBlankString::toStringSerialDescriptor)
+        .toStringSerialDescriptor()
         .getOrThrow()
 
     override fun serialize(encoder: Encoder, value: NotBlankString): Unit =
@@ -72,8 +71,8 @@ internal object NotBlankStringSerializer : KSerializer<NotBlankString> {
         .decodeString()
         .toNotBlankString()
         .getOrNull()
-        ?: throw SerializationException(NotBlankStringConstructionException)
+        ?: throw SerializationException(NotBlankStringException)
 }
 
-private object NotBlankStringConstructionException :
+private object NotBlankStringException :
     IllegalArgumentException("Given string shouldn't be blank.")
