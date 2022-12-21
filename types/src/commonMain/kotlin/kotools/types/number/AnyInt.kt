@@ -8,7 +8,6 @@ import kotlinx.serialization.encoding.Encoder
 import kotools.shared.Project.Types
 import kotools.shared.SinceKotools
 import kotools.types.Package
-import kotools.types.serialization.toIntSerialDescriptor
 import kotools.types.text.NotBlankString
 import kotools.types.text.toNotBlankString
 
@@ -35,7 +34,7 @@ internal sealed interface AnyIntSerializer<I : AnyInt> : KSerializer<I> {
     val serialName: Result<NotBlankString>
 
     override val descriptor: SerialDescriptor
-        get() = serialName.map(NotBlankString::toIntSerialDescriptor)
+        get() = serialName.toIntSerialDescriptor()
             .getOrThrow()
 
     override fun serialize(encoder: Encoder, value: I): Unit =

@@ -1,4 +1,4 @@
-package kotools.types.serialization
+package kotools.types.number
 
 import kotlinx.serialization.descriptors.PrimitiveKind
 import kotlinx.serialization.descriptors.PrimitiveSerialDescriptor
@@ -8,5 +8,5 @@ import kotools.types.text.NotBlankString
 private class IntSerialDescriptor(name: NotBlankString) :
     SerialDescriptor by PrimitiveSerialDescriptor(name.value, PrimitiveKind.INT)
 
-internal fun NotBlankString.toIntSerialDescriptor(): SerialDescriptor =
-    IntSerialDescriptor(this)
+internal fun Result<NotBlankString>.toIntSerialDescriptor():
+        Result<SerialDescriptor> = map(::IntSerialDescriptor)
