@@ -1,8 +1,16 @@
 package kotools.types.number
 
+import kotlinx.serialization.KSerializer
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.SerializationException
+import kotlinx.serialization.descriptors.PrimitiveKind
+import kotlinx.serialization.descriptors.PrimitiveSerialDescriptor
+import kotlinx.serialization.descriptors.SerialDescriptor
+import kotlinx.serialization.encoding.Decoder
+import kotlinx.serialization.encoding.Encoder
 import kotools.shared.Project.Types
 import kotools.shared.SinceKotools
+import kotools.types.Package
 import kotools.types.toSuccessfulResult
 import kotlin.jvm.JvmInline
 
@@ -31,4 +39,21 @@ public fun Int.toStrictlyNegativeInt(): Result<StrictlyNegativeInt> =
     StrictlyNegativeInt of this
 
 internal object StrictlyNegativeIntSerializer :
-    AnyIntSerializer<StrictlyNegativeInt>(Int::toStrictlyNegativeInt)
+    KSerializer<StrictlyNegativeInt> {
+    override val descriptor: SerialDescriptor = PrimitiveSerialDescriptor(
+        "${Package.number}.StrictlyNegativeInt",
+        PrimitiveKind.INT
+    )
+
+    override fun serialize(encoder: Encoder, value: StrictlyNegativeInt): Unit =
+        encoder.encodeInt(value.value)
+
+    override fun deserialize(decoder: Decoder): StrictlyNegativeInt {
+        val value: Int = decoder.decodeInt()
+        return value.toStrictlyNegativeInt()
+            .getOrNull()
+            ?: throw SerializationException(
+                value shouldBe aStrictlyNegativeNumber
+            )
+    }
+}
