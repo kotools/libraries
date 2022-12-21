@@ -73,10 +73,10 @@ class NotBlankStringSerializerTest {
     }
 
     @Test
-    fun deserialization_should_fail_with_a_blank_String(): Unit = Json
-        .encodeToString(" ")
-        .let<String, SerializationException> {
-            assertFailsWith { Json.decodeFromString<NotBlankString>(it) }
-        }
-        .assertHasAMessage()
+    fun deserialization_should_fail_with_a_blank_String() {
+        val encoded: String = Json.encodeToString(" ")
+        val exception: SerializationException =
+            assertFailsWith { Json.decodeFromString<NotBlankString>(encoded) }
+        exception.assertHasAMessage()
+    }
 }

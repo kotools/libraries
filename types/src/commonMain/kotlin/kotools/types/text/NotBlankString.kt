@@ -69,7 +69,6 @@ internal object NotBlankStringSerializer : KSerializer<NotBlankString> {
     override fun serialize(encoder: Encoder, value: NotBlankString): Unit =
         encoder.encodeString("$value")
 
-    @Throws(SerializationException::class)
     override fun deserialize(decoder: Decoder): NotBlankString = decoder
         .decodeString()
         .toNotBlankString()
