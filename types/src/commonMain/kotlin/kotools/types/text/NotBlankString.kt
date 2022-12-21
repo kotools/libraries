@@ -3,8 +3,6 @@ package kotools.types.text
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.SerializationException
-import kotlinx.serialization.descriptors.PrimitiveKind
-import kotlinx.serialization.descriptors.PrimitiveSerialDescriptor
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
@@ -13,6 +11,7 @@ import kotools.shared.SinceKotools
 import kotools.types.Package
 import kotools.types.number.StrictlyPositiveInt
 import kotools.types.number.toStrictlyPositiveInt
+import kotools.types.serialization.toStringSerialDescriptor
 import kotools.types.toSuccessfulResult
 import kotlin.jvm.JvmInline
 
@@ -61,10 +60,10 @@ public fun String.toNotBlankString(): Result<NotBlankString> =
     NotBlankString of this
 
 internal object NotBlankStringSerializer : KSerializer<NotBlankString> {
-    override val descriptor: SerialDescriptor = PrimitiveSerialDescriptor(
-        "${Package.text}.NotBlankString",
-        PrimitiveKind.STRING
-    )
+    override val descriptor: SerialDescriptor = "${Package.text}.NotBlankString"
+        .toNotBlankString()
+        .map(NotBlankString::toStringSerialDescriptor)
+        .getOrThrow()
 
     override fun serialize(encoder: Encoder, value: NotBlankString): Unit =
         encoder.encodeString("$value")

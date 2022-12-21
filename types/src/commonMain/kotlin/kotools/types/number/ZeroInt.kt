@@ -3,14 +3,15 @@ package kotools.types.number
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.SerializationException
-import kotlinx.serialization.descriptors.PrimitiveKind
-import kotlinx.serialization.descriptors.PrimitiveSerialDescriptor
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 import kotools.shared.Project.Types
 import kotools.shared.SinceKotools
 import kotools.types.Package
+import kotools.types.serialization.toIntSerialDescriptor
+import kotools.types.text.NotBlankString
+import kotools.types.text.toNotBlankString
 
 /** Representation of the zero integer. */
 @Serializable(ZeroIntSerializer::class)
@@ -30,10 +31,10 @@ public object ZeroInt : PositiveInt, NegativeInt {
 }
 
 internal object ZeroIntSerializer : KSerializer<ZeroInt> {
-    override val descriptor: SerialDescriptor = PrimitiveSerialDescriptor(
-        "${Package.number}.ZeroInt",
-        PrimitiveKind.INT
-    )
+    override val descriptor: SerialDescriptor = "${Package.number}.ZeroInt"
+        .toNotBlankString()
+        .map(NotBlankString::toIntSerialDescriptor)
+        .getOrThrow()
 
     override fun serialize(encoder: Encoder, value: ZeroInt): Unit =
         encoder.encodeInt(value.value)
