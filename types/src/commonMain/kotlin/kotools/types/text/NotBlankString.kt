@@ -73,11 +73,8 @@ internal object NotBlankStringSerializer : KSerializer<NotBlankString> {
         .decodeString()
         .toNotBlankString()
         .getOrNull()
-        ?: throw NotBlankStringConstructionException.toSerializationException()
+        ?: throw SerializationException(NotBlankStringConstructionException)
 }
 
 private object NotBlankStringConstructionException :
-    IllegalArgumentException("Given string shouldn't be blank.") {
-    fun toSerializationException(): SerializationException =
-        SerializationException(message)
-}
+    IllegalArgumentException("Given string shouldn't be blank.")
