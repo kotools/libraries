@@ -2,6 +2,8 @@ package kotools.types.number
 
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.descriptors.PrimitiveKind
+import kotlinx.serialization.descriptors.PrimitiveSerialDescriptor
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
@@ -34,7 +36,8 @@ internal sealed interface AnyIntSerializer<I : AnyInt> : KSerializer<I> {
     val serialName: Result<NotBlankString>
 
     override val descriptor: SerialDescriptor
-        get() = serialName.toIntSerialDescriptor()
+        get() = serialName
+            .map { PrimitiveSerialDescriptor(it.value, PrimitiveKind.INT) }
             .getOrThrow()
 
     override fun serialize(encoder: Encoder, value: I): Unit =
