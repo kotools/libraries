@@ -1,11 +1,15 @@
 package kotools.types.collection
 
+import kotlinx.serialization.ExperimentalSerializationApi
+import kotlinx.serialization.SerializationException
+import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import kotools.assert.assertEquals
 import kotools.assert.assertFailsWith
 import kotools.assert.assertTrue
+import kotools.types.Package
 import kotools.types.assertHasAMessage
 import kotlin.random.Random
 import kotlin.test.Test
@@ -46,6 +50,15 @@ class NotEmptyMapTest {
         assertFailsWith<IllegalArgumentException>(result::getOrThrow)
             .assertHasAMessage()
     }
+}
+
+class NotEmptyMapSerializerTest {
+    @ExperimentalSerializationApi
+    @Test
+    fun descriptor_should_have_the_qualified_name_of_NotEmptyMap_as_serial_name(): Unit =
+        NotEmptyMap.serializer(String.serializer(), Int.serializer())
+            .descriptor
+            .serialName assertEquals "${Package.collection}.NotEmptyMap"
 
     @Test
     fun serialization_should_behave_like_a_Map() {
@@ -68,7 +81,7 @@ class NotEmptyMapTest {
     fun deserialization_should_fail_with_an_empty_Map() {
         val map: Map<String, Int> = emptyMap()
         val encoded: String = Json.encodeToString(map)
-        val exception: IllegalArgumentException = assertFailsWith {
+        val exception: SerializationException = assertFailsWith {
             Json.decodeFromString<NotEmptyMap<String, Int>>(encoded)
         }
         exception.assertHasAMessage()
