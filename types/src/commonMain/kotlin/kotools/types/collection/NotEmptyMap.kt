@@ -1,16 +1,13 @@
 package kotools.types.collection
 
-import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.MapSerializer
-import kotlinx.serialization.descriptors.SerialDescriptor
-import kotlinx.serialization.encoding.Decoder
-import kotlinx.serialization.encoding.Encoder
 import kotools.shared.Project.Types
 import kotools.shared.SinceKotools
 import kotools.types.Package
+import kotools.types.text.NotBlankString
+import kotools.types.text.toNotBlankString
 import kotools.types.toSuccessfulResult
 
 /**
@@ -56,24 +53,21 @@ public fun <K, V> Map<K, V>.toNotEmptyMap(): Result<NotEmptyMap<K, V>> =
 internal class NotEmptyMapSerializer<K, V>(
     keySerializer: KSerializer<K>,
     valueSerializer: KSerializer<V>
-) : KSerializer<NotEmptyMap<K, V>> {
-    private val delegate: KSerializer<Map<K, V>> =
+) : DelegatedSerializer<Map<K, V>, NotEmptyMap<K, V>> {
+    override val delegate: KSerializer<Map<K, V>> by lazy {
         MapSerializer(keySerializer, valueSerializer)
+    }
 
-    @ExperimentalSerializationApi
-    override val descriptor: SerialDescriptor = SerialDescriptor(
-        "${Package.collection}.NotEmptyMap",
-        delegate.descriptor
+    override val serialName: Result<NotBlankString> by lazy(
+        "${Package.collection}.NotEmptyMap"::toNotBlankString
     )
 
-    override fun serialize(encoder: Encoder, value: NotEmptyMap<K, V>): Unit =
-        encoder.encodeSerializableValue(delegate, value)
+    override val deserializationException: IllegalArgumentException by lazy {
+        EmptyMapException
+    }
 
-    override fun deserialize(decoder: Decoder): NotEmptyMap<K, V> = decoder
-        .decodeSerializableValue(delegate)
-        .toNotEmptyMap()
-        .getOrNull()
-        ?: throw SerializationException(EmptyMapException)
+    override fun Map<K, V>.toResultOfB(): Result<NotEmptyMap<K, V>> =
+        toNotEmptyMap()
 }
 
 private object EmptyMapException :

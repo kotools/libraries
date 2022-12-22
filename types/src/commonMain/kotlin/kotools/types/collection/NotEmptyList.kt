@@ -1,16 +1,13 @@
 package kotools.types.collection
 
-import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
-import kotlinx.serialization.descriptors.SerialDescriptor
-import kotlinx.serialization.encoding.Decoder
-import kotlinx.serialization.encoding.Encoder
 import kotools.shared.Project.Types
 import kotools.shared.SinceKotools
 import kotools.types.Package
+import kotools.types.text.NotBlankString
+import kotools.types.text.toNotBlankString
 import kotools.types.toSuccessfulResult
 
 /**
@@ -53,22 +50,19 @@ public fun <E> Collection<E>.toNotEmptyList(): Result<NotEmptyList<E>> =
     NotEmptyList of this
 
 internal class NotEmptyListSerializer<E>(elementSerializer: KSerializer<E>) :
-    KSerializer<NotEmptyList<E>> {
-    private val delegate: KSerializer<List<E>> =
+    DelegatedSerializer<List<E>, NotEmptyList<E>> {
+    override val delegate: KSerializer<List<E>> by lazy {
         ListSerializer(elementSerializer)
+    }
 
-    @ExperimentalSerializationApi
-    override val descriptor: SerialDescriptor = SerialDescriptor(
-        "${Package.collection}.NotEmptyList",
-        delegate.descriptor
+    override val serialName: Result<NotBlankString> by lazy(
+        "${Package.collection}.NotEmptyList"::toNotBlankString
     )
 
-    override fun serialize(encoder: Encoder, value: NotEmptyList<E>): Unit =
-        encoder.encodeSerializableValue(delegate, value)
+    override val deserializationException: IllegalArgumentException by lazy {
+        EmptyCollectionException
+    }
 
-    override fun deserialize(decoder: Decoder): NotEmptyList<E> = decoder
-        .decodeSerializableValue(delegate)
-        .toNotEmptyList()
-        .getOrNull()
-        ?: throw SerializationException(EmptyCollectionException)
+    override fun List<E>.toResultOfB(): Result<NotEmptyList<E>> =
+        toNotEmptyList()
 }

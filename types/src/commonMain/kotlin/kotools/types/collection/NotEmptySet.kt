@@ -1,16 +1,13 @@
 package kotools.types.collection
 
-import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.SetSerializer
-import kotlinx.serialization.descriptors.SerialDescriptor
-import kotlinx.serialization.encoding.Decoder
-import kotlinx.serialization.encoding.Encoder
 import kotools.shared.Project.Types
 import kotools.shared.SinceKotools
 import kotools.types.Package
+import kotools.types.text.NotBlankString
+import kotools.types.text.toNotBlankString
 import kotools.types.toSuccessfulResult
 
 /**
@@ -53,21 +50,18 @@ public fun <E> Collection<E>.toNotEmptySet(): Result<NotEmptySet<E>> =
     NotEmptySet of this
 
 internal class NotEmptySetSerializer<E>(elementSerializer: KSerializer<E>) :
-    KSerializer<NotEmptySet<E>> {
-    private val delegate: KSerializer<Set<E>> = SetSerializer(elementSerializer)
+    DelegatedSerializer<Set<E>, NotEmptySet<E>> {
+    override val delegate: KSerializer<Set<E>> by lazy {
+        SetSerializer(elementSerializer)
+    }
 
-    @ExperimentalSerializationApi
-    override val descriptor: SerialDescriptor = SerialDescriptor(
-        "${Package.collection}.NotEmptySet",
-        delegate.descriptor
+    override val serialName: Result<NotBlankString> by lazy(
+        "${Package.collection}.NotEmptySet"::toNotBlankString
     )
 
-    override fun serialize(encoder: Encoder, value: NotEmptySet<E>): Unit =
-        encoder.encodeSerializableValue(delegate, value)
+    override val deserializationException: IllegalArgumentException by lazy {
+        EmptyCollectionException
+    }
 
-    override fun deserialize(decoder: Decoder): NotEmptySet<E> = decoder
-        .decodeSerializableValue(delegate)
-        .toNotEmptySet()
-        .getOrNull()
-        ?: throw SerializationException(EmptyCollectionException)
+    override fun Set<E>.toResultOfB(): Result<NotEmptySet<E>> = toNotEmptySet()
 }
