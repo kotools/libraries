@@ -1,10 +1,14 @@
 package kotools.types.collection
 
+import kotlinx.serialization.ExperimentalSerializationApi
+import kotlinx.serialization.SerializationException
+import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import kotools.assert.assertEquals
 import kotools.assert.assertFailsWith
+import kotools.types.Package
 import kotools.types.assertHasAMessage
 import kotlin.random.Random
 import kotlin.test.Test
@@ -45,6 +49,15 @@ class NotEmptySetTest {
         assertFailsWith<IllegalArgumentException>(result::getOrThrow)
             .assertHasAMessage()
     }
+}
+
+class NotEmptySetSerializerTest {
+    @ExperimentalSerializationApi
+    @Test
+    fun descriptor_should_have_the_qualified_name_of_NotEmptySet_as_serial_name(): Unit =
+        NotEmptySet.serializer(Int.serializer())
+            .descriptor
+            .serialName assertEquals "${Package.collection}.NotEmptySet"
 
     @Test
     fun serialization_should_behave_like_a_Set() {
@@ -68,7 +81,7 @@ class NotEmptySetTest {
     fun deserialization_should_fail_with_an_empty_Collection() {
         val collection: Collection<Int> = emptyList()
         val encoded: String = Json.encodeToString(collection)
-        val exception: IllegalArgumentException = assertFailsWith {
+        val exception: SerializationException = assertFailsWith {
             Json.decodeFromString<NotEmptySet<Int>>(encoded)
         }
         exception.assertHasAMessage()
