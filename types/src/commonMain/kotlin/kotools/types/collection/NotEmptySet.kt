@@ -22,7 +22,7 @@ private constructor(private val elements: Set<E>) : Set<E> by elements {
             elements.takeIf(Collection<E>::isNotEmpty)
                 ?.toSet()
                 ?.toSuccessfulResult(::NotEmptySet)
-                ?: Result.failure(EmptyCollectionError)
+                ?: Result.failure(EmptyCollectionException)
     }
 
     override fun toString(): String = "$elements"
