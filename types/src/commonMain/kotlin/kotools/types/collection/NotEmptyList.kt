@@ -43,7 +43,7 @@ public fun <E> notEmptyListOf(head: E, vararg tail: E): NotEmptyList<E> {
 
 /**
  * Returns a [NotEmptyList] containing all the elements of this collection, or
- * an [IllegalArgumentException] if this collection is empty.
+ * returns an [IllegalArgumentException] if this collection is empty.
  */
 @SinceKotools(Types, "4.0")
 public fun <E> Collection<E>.toNotEmptyList(): Result<NotEmptyList<E>> =

@@ -27,7 +27,7 @@ private constructor(override val value: Int) : NonZeroInt, PositiveInt {
 }
 
 /**
- * Returns this integer as a [StrictlyPositiveInt], or an
+ * Returns this integer as a [StrictlyPositiveInt], or returns an
  * [IllegalArgumentException] if this integer is [negative][NegativeInt].
  */
 @SinceKotools(Types, "1.1")

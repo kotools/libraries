@@ -43,7 +43,7 @@ public fun <K, V> notEmptyMapOf(
     .getOrThrow()
 
 /**
- * Returns a [NotEmptyMap] containing all the entries of this map, or an
+ * Returns a [NotEmptyMap] containing all the entries of this map, or returns an
  * [IllegalArgumentException] if this map is empty.
  */
 @SinceKotools(Types, "4.0")

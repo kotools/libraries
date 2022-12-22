@@ -14,8 +14,9 @@ import kotools.types.text.toNotBlankString
 public sealed interface NegativeInt : AnyInt
 
 /**
- * Returns this integer as a [NegativeInt], or an [IllegalArgumentException] if
- * this integer is [strictly positive][StrictlyPositiveInt].
+ * Returns this integer as a [NegativeInt], or returns an
+ * [IllegalArgumentException] if this integer is
+ * [strictly positive][StrictlyPositiveInt].
  */
 @SinceKotools(Types, "1.1")
 public fun Int.toNegativeInt(): Result<NegativeInt> = when {

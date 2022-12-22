@@ -14,8 +14,8 @@ import kotools.types.text.toNotBlankString
 public sealed interface NonZeroInt : AnyInt
 
 /**
- * Returns this integer as a [NonZeroInt], or an [IllegalArgumentException] if
- * this integer equals [zero][ZeroInt].
+ * Returns this integer as a [NonZeroInt], or returns an
+ * [IllegalArgumentException] if this integer equals [zero][ZeroInt].
  */
 @SinceKotools(Types, "1.1")
 public fun Int.toNonZeroInt(): Result<NonZeroInt> = when {
