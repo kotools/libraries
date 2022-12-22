@@ -3,6 +3,8 @@ package kotools.types.text
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.SerializationException
+import kotlinx.serialization.descriptors.PrimitiveKind
+import kotlinx.serialization.descriptors.PrimitiveSerialDescriptor
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
@@ -61,7 +63,7 @@ public fun String.toNotBlankString(): Result<NotBlankString> =
 internal object NotBlankStringSerializer : KSerializer<NotBlankString> {
     override val descriptor: SerialDescriptor = "${Package.text}.NotBlankString"
         .toNotBlankString()
-        .toStringSerialDescriptor()
+        .map { PrimitiveSerialDescriptor(it.value, PrimitiveKind.STRING) }
         .getOrThrow()
 
     override fun serialize(encoder: Encoder, value: NotBlankString): Unit =
