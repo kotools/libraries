@@ -1,4 +1,8 @@
-﻿![Kotools](assets/banner.jpg)
+﻿> This project is not maintained anymore.
+> Please find the libraries in
+> [their respective repository](https://github.com/kotools).
+
+![Kotools](assets/banner.jpg)
 
 <div align="center">
 
